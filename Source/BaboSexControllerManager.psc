@@ -366,22 +366,28 @@ idle[] Function WolfKillMove()
 EndFunction
 
 Function AddHadSexFaction(actor[] akactorArray, Bool brape = false)
+if akactorArray == None
+	return
+endIf
 int i = akactorArray.length
 while i > 1;to exclude player
 i -= 1
-	if brape
-		if akactorArray[i].isinfaction(BaboHadRapedPlayerFaction)
-			akactorArray[i].setfactionrank(BaboHadRapedPlayerFaction, akactorArray[i].getfactionrank(BaboHadRapedPlayerFaction) + 1)
+	if akactorArray[i]
+		if brape
+			if akactorArray[i].isinfaction(BaboHadRapedPlayerFaction)
+				akactorArray[i].setfactionrank(BaboHadRapedPlayerFaction, akactorArray[i].getfactionrank(BaboHadRapedPlayerFaction) + 1)
+			else
+				akactorArray[i].addtofaction(BaboHadRapedPlayerFaction)
+			endif
 		else
-			akactorArray[i].addtofaction(BaboHadRapedPlayerFaction)
+			if akactorArray[i].isinfaction(BaboHadSexwithPlayerFaction)
+				akactorArray[i].setfactionrank(BaboHadSexwithPlayerFaction, akactorArray[i].getfactionrank(BaboHadSexwithPlayerFaction) + 1)
+			else
+				akactorArray[i].addtofaction(BaboHadSexwithPlayerFaction)
+			endif
 		endif
-	else
-		if akactorArray[i].isinfaction(BaboHadSexwithPlayerFaction)
-			akactorArray[i].setfactionrank(BaboHadSexwithPlayerFaction, akactorArray[i].getfactionrank(BaboHadSexwithPlayerFaction) + 1)
-		else
-			akactorArray[i].addtofaction(BaboHadSexwithPlayerFaction)
-		endif
-	endif
+	endIf
+	
 EndWhile
 EndFunction
 
@@ -2623,7 +2629,7 @@ int listsize
 listsize = BaboEdibleCheapFormList.getsize()
 if randomB
 	while Howmany > 0
-		ri = Utility.randomint(0, listsize)
+		ri = Utility.randomint(0, listsize - 1)
 		akactor.additem(BaboEdibleCheapFormList.getat(ri) as form, 1)
 		Howmany -= 1
 	endwhile
@@ -2638,7 +2644,7 @@ int listsize
 listsize = BaboEdibleCheapSusFormList.getsize()
 if randomB
 	while Howmany > 0
-		ri = Utility.randomint(0, listsize)
+		ri = Utility.randomint(0, listsize - 1)
 		akactor.additem(BaboEdibleCheapSusFormList.getat(ri) as form, 1)
 		Howmany -= 1
 	endwhile
@@ -3993,6 +3999,9 @@ EndFunction
 ;\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 Function DeleteWhenAbleWithTimeout(Actor[] actors, float afSeconds = 30.0)
+	if actors == None
+		return
+	endIf
 	Int i = 0
 	bool wait = false
 	While afSeconds > 0

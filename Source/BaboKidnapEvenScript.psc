@@ -377,12 +377,28 @@ Function KidnapperAddPerk()
 endfunction
 
 Bool Function FollowersStandby()
-	(Follower01.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-	(Follower02.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-	(Follower03.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-	(Follower04.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-	(Follower05.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-	if Follower01 || Follower02 || Follower03 || Follower04 || Follower05
+	bool moved = false
+	if Follower01
+		(Follower01.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
+		moved = true
+	endIf
+	if Follower02
+		(Follower02.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
+		moved = true
+	endIf
+	if Follower03
+		(Follower03.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
+		moved = true
+	endIf
+	if Follower04
+		(Follower04.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
+		moved = true
+	endIf
+	if Follower05
+		(Follower05.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
+		moved = true
+	endIf
+	if moved
 		return true
 	else
 		return false
@@ -1531,7 +1547,7 @@ Function OnLOSRegister()
 	;LOSRegister(akactor01, PlayerRef)
 	BaboKidnapTiedUp.setvalue(0);You are not tied
 	int i = kidnappernum
-		While i >= 0;Needs Fix WIP
+		While i > 0;Needs Fix WIP
 		i -= 1
 			LOSSingleRegister(KidnapperActors[i], PlayerRef)
 		EndWhile
@@ -1904,6 +1920,9 @@ EndFunction
 
 Function MiscEventFire(bool bsex)
 int i = KidnapperActors.length
+if i <= 0
+	return
+endIf
 int actori = Utility.randomint(0, i - 1)
 int ri = Utility.randomint(0, 100)
 
@@ -1914,7 +1933,7 @@ if bsex
 else
 	if ri < 10
 		;gangbang
-		While i >= 0
+		While i > 0
 			i -= 1
 			KidnapperActors[i].moveto(KidnapperMarker01.getreference());in front of Player
 		endWhile
@@ -1938,7 +1957,7 @@ bool Function CheckEscapeStruggleDetect()
 int i = kidnappernum
 bool bswitch = true
 actor akactor
-	While i >= 0 && bswitch
+	While i > 0 && bswitch
 		i -= 1
 		if KidnapperActors[i] && playerref.getdistance(KidnapperActors[i]) <= 1024
 			akactor = KidnapperActors[i]
@@ -2507,7 +2526,7 @@ Function OnLOSRegister()
 	;LOSRegister(akactor01, PlayerRef)
 	BaboKidnapTiedUp.setvalue(0);You are not tied
 	int i = kidnappernum
-		While i >= 0
+		While i > 0
 		i -= 1
 			LOSRegister(KidnapperActors[i], PlayerRef)
 		EndWhile
@@ -2586,6 +2605,9 @@ EndEvent
 
 Function MiscEventFire(bool bsex)
 int i = KidnapperActors.length
+if i <= 0
+	return
+endIf
 int actori = Utility.randomint(0, i - 1)
 int ri = Utility.randomint(0, 100)
 
@@ -2597,7 +2619,7 @@ if bsex && KidnapperActors[actori]
 elseif !bsex && KidnapperActors[actori]
 	if ri < 10
 		;gangbang
-		While i >= 0
+		While i > 0
 			i -= 1
 			KidnapperActors[i].moveto(KidnapperMarker01.getreference());in front of Player
 		endWhile
@@ -2717,7 +2739,7 @@ Function CalltheGuard()
 	int i = kidnappernum
 	actor akactor
 	bool bswitch = true
-	While i >= 0 && bswitch
+	While i > 0 && bswitch
 		i -= 1
 		if KidnapperActors[i] && playerref.getdistance(KidnapperActors[i]) <= 1024
 			akactor = KidnapperActors[i]
@@ -2862,7 +2884,7 @@ if akTarget == PlayerRef
 			elseif bSnareTrapped
 				QTESnareTrapAbort()
 				i = kidnappernum
-				While i >= 0
+				While i > 0
 				i -= 1
 					LOSUnRegister(KidnapperActors[i], PlayerRef)
 				EndWhile
@@ -2874,7 +2896,7 @@ if akTarget == PlayerRef
 					PlayerRef.StartSneaking()
 				endif
 					i = kidnappernum
-					While i >= 0
+					While i > 0
 					i -= 1
 						LOSUnRegister(KidnapperActors[i], PlayerRef)
 					EndWhile
@@ -3106,7 +3128,8 @@ Function YouGotSpotted(int Scenario)
 int choice = BaboKidnapHangedMessage.Show()
 	if (choice == 0);Die
 		;EquipPee
-		SurrogateActor.equipitem(SurrogateActor.additem(BaboPee01, 1))
+		SurrogateActor.additem(BaboPee01, 1)
+		SurrogateActor.equipitem(BaboPee01)
 		RegisterForSingleUpdate(60.0)
 	else
 		YouAreRescued()

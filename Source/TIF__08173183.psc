@@ -6,12 +6,16 @@ Scriptname TIF__08173183 Extends TopicInfo Hidden
 Function Fragment_2(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-actor[] sexActors = new actor[2]
-sexActors[0] = Game.GetPlayer()
-sexActors[1] = akspeaker as Actor
-sslBaseAnimation[] anims
-anims = SexLab.GetAnimationsByTag(2, "Dragon", "Vaginal")
-SexLab.StartSex(sexActors, anims, victim=sexActors[0])
+SexLabFramework sexLab = Game.GetFormFromFile(0x000D62, "SexLab.esm") as SexLabFramework
+if sexLab != None
+	actor[] sexActors = new actor[2]
+    sexActors[0] = Game.GetPlayer()
+    sexActors[1] = akspeaker as Actor
+    sslBaseAnimation[] anims
+    anims = sexLab.GetAnimationsByTag(2, "Dragon", "Vaginal")
+    sexLab.StartSex(sexActors, anims, victim=sexActors[0])
+endIf
+
 ;END CODE
 EndFunction
 ;END FRAGMENT

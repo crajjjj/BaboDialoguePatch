@@ -543,14 +543,38 @@ kmyQuest.SummonHelper(false)
 kmyQuest.ResetSetRoom()
 kmyQuest.CleanResetRoom()
 
-(Alias_Kidnapper01.getreference() as actor).delete()
-(Alias_Kidnapper02.getreference() as actor).delete()
-(Alias_Kidnapper03.getreference() as actor).delete()
-(Alias_Kidnapper04.getreference() as actor).delete()
-(Alias_Kidnapper05.getreference() as actor).delete()
-(Alias_OtherVictimA.getreference() as actor).delete()
-(Alias_OtherVictimB.getreference() as actor).delete()
-(Alias_OtherVictimC.getreference() as actor).delete()
+Actor Kidnapper01Ref = Alias_Kidnapper01.getreference() as actor
+Actor Kidnapper02Ref = Alias_Kidnapper02.getreference() as actor
+Actor Kidnapper03Ref = Alias_Kidnapper03.getreference() as actor
+Actor Kidnapper04Ref = Alias_Kidnapper04.getreference() as actor
+Actor Kidnapper05Ref = Alias_Kidnapper05.getreference() as actor
+Actor OtherVictimARef = Alias_OtherVictimA.getreference() as actor
+Actor OtherVictimBRef = Alias_OtherVictimB.getreference() as actor
+Actor OtherVictimCRef = Alias_OtherVictimC.getreference() as actor
+if Kidnapper01Ref
+	Kidnapper01Ref.delete()
+endIf
+if Kidnapper02Ref
+	Kidnapper02Ref.delete()
+endIf
+if Kidnapper03Ref
+	Kidnapper03Ref.delete()
+endIf
+if Kidnapper04Ref
+	Kidnapper04Ref.delete()
+endIf
+if Kidnapper05Ref
+	Kidnapper05Ref.delete()
+endIf
+if OtherVictimARef
+	OtherVictimARef.delete()
+endIf
+if OtherVictimBRef
+	OtherVictimBRef.delete()
+endIf
+if OtherVictimCRef
+	OtherVictimCRef.delete()
+endIf
 
 stop()
 ;END CODE

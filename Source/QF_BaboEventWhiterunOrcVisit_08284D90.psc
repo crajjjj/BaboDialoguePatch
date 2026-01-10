@@ -107,9 +107,18 @@ BaboEventWhiterunOrcVisitorsScript kmyQuest = __temp as BaboEventWhiterunOrcVisi
 kmyQuest.Messagebox(3)
 kmyQuest.DoorSwitch(false)
 BRMQuest.DecreaseReputation(-20, 0)
-(Alias_OrcRaper01.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper02.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper03.getRef() as Actor).EvaluatePackage()
+Actor OrcRaper01Ref = Alias_OrcRaper01.getRef() as Actor
+Actor OrcRaper02Ref = Alias_OrcRaper02.getRef() as Actor
+Actor OrcRaper03Ref = Alias_OrcRaper03.getRef() as Actor
+if OrcRaper01Ref
+	OrcRaper01Ref.EvaluatePackage()
+endIf
+if OrcRaper02Ref
+	OrcRaper02Ref.EvaluatePackage()
+endIf
+if OrcRaper03Ref
+	OrcRaper03Ref.EvaluatePackage()
+endIf
 
 Utility.Wait(5.0)
 
@@ -135,12 +144,30 @@ Quest __temp = self as Quest
 BaboEventWhiterunOrcVisitorsScript kmyQuest = __temp as BaboEventWhiterunOrcVisitorsScript
 ;END AUTOCAST
 ;BEGIN CODE
-(Alias_OrcRaper01.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper02.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper03.getRef() as Actor).EvaluatePackage()
-(Alias_Child01.getRef() as Actor).EvaluatePackage()
-(Alias_Child02.getRef() as Actor).EvaluatePackage()
-(Alias_Lydia.getRef() as Actor).EvaluatePackage()
+Actor OrcRaper01Ref = Alias_OrcRaper01.getRef() as Actor
+Actor OrcRaper02Ref = Alias_OrcRaper02.getRef() as Actor
+Actor OrcRaper03Ref = Alias_OrcRaper03.getRef() as Actor
+Actor Child01Ref = Alias_Child01.getRef() as Actor
+Actor Child02Ref = Alias_Child02.getRef() as Actor
+Actor LydiaRef = Alias_Lydia.getRef() as Actor
+if OrcRaper01Ref
+	OrcRaper01Ref.EvaluatePackage()
+endIf
+if OrcRaper02Ref
+	OrcRaper02Ref.EvaluatePackage()
+endIf
+if OrcRaper03Ref
+	OrcRaper03Ref.EvaluatePackage()
+endIf
+if Child01Ref
+	Child01Ref.EvaluatePackage()
+endIf
+if Child02Ref
+	Child02Ref.EvaluatePackage()
+endIf
+if LydiaRef
+	LydiaRef.EvaluatePackage()
+endIf
 kmyQuest.Messagebox(7)
 Utility.wait(10.0)
 kmyQuest.ActorDisposal()
@@ -170,7 +197,10 @@ BaboEventWhiterunOrcVisitorsScript kmyQuest = __temp as BaboEventWhiterunOrcVisi
 ;END AUTOCAST
 ;BEGIN CODE
 BQuest.BigguySLReady(Alias_PlayerRef.getreference() as actor, false)
-(Alias_OrcRaper01.getRef() as Actor).EvaluatePackage()
+Actor OrcRaper01Ref = Alias_OrcRaper01.getRef() as Actor
+if OrcRaper01Ref
+	OrcRaper01Ref.EvaluatePackage()
+endIf
 kmyQuest.EquipZazItem()
 BQuest.RecoverControl()
 ;END CODE
@@ -209,9 +239,15 @@ Alias_OrcRaper01.Clear()
 Alias_OrcRaper02.Clear()
 Alias_OrcRaper03.Clear()
 Utility.wait(1.0)
-OrcVisitorRef01.forcerefto(Orc01)
-OrcVisitorRef02.forcerefto(Orc02)
-OrcVisitorRef03.forcerefto(Orc03)
+if Orc01
+	OrcVisitorRef01.forcerefto(Orc01)
+endIf
+if Orc02
+	OrcVisitorRef02.forcerefto(Orc02)
+endIf
+if Orc03
+	OrcVisitorRef03.forcerefto(Orc03)
+endIf
 Utility.wait(1.0)
 self.setstage(80)
 ;END CODE
@@ -241,9 +277,18 @@ BaboEventWhiterunOrcVisitorsScript kmyQuest = __temp as BaboEventWhiterunOrcVisi
 ;BEGIN CODE
 ;kmyQuest.OrcRapeScene01.Stop()
 
-(Alias_OrcRaper01.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper02.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper03.getRef() as Actor).EvaluatePackage()
+Actor OrcRaper01Ref = Alias_OrcRaper01.getRef() as Actor
+Actor OrcRaper02Ref = Alias_OrcRaper02.getRef() as Actor
+Actor OrcRaper03Ref = Alias_OrcRaper03.getRef() as Actor
+if OrcRaper01Ref
+	OrcRaper01Ref.EvaluatePackage()
+endIf
+if OrcRaper02Ref
+	OrcRaper02Ref.EvaluatePackage()
+endIf
+if OrcRaper03Ref
+	OrcRaper03Ref.EvaluatePackage()
+endIf
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -389,9 +434,18 @@ BaboEventWhiterunOrcVisitorsScript kmyQuest = __temp as BaboEventWhiterunOrcVisi
 ;BEGIN CODE
 ;kmyQuest.OrcRapeScene01.Stop()
 
-(Alias_OrcRaper01.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper02.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper03.getRef() as Actor).EvaluatePackage()
+Actor OrcRaper01Ref = Alias_OrcRaper01.getRef() as Actor
+Actor OrcRaper02Ref = Alias_OrcRaper02.getRef() as Actor
+Actor OrcRaper03Ref = Alias_OrcRaper03.getRef() as Actor
+if OrcRaper01Ref
+	OrcRaper01Ref.EvaluatePackage()
+endIf
+if OrcRaper02Ref
+	OrcRaper02Ref.EvaluatePackage()
+endIf
+if OrcRaper03Ref
+	OrcRaper03Ref.EvaluatePackage()
+endIf
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -436,9 +490,18 @@ BaboEventWhiterunOrcVisitorsScript kmyQuest = __temp as BaboEventWhiterunOrcVisi
 kmyQuest.Messagebox(9)
 BRMQuest.IncreaseReputation(20, 10)
 BaboGlobalWhiterunOrcFuckToyTitle.setvalue(0)
-(Alias_Child01.getRef() as Actor).EvaluatePackage()
-(Alias_Child02.getRef() as Actor).EvaluatePackage()
-(Alias_Lydia.getRef() as Actor).EvaluatePackage()
+Actor Child01Ref = Alias_Child01.getRef() as Actor
+Actor Child02Ref = Alias_Child02.getRef() as Actor
+Actor LydiaRef = Alias_Lydia.getRef() as Actor
+if Child01Ref
+	Child01Ref.EvaluatePackage()
+endIf
+if Child02Ref
+	Child02Ref.EvaluatePackage()
+endIf
+if LydiaRef
+	LydiaRef.EvaluatePackage()
+endIf
 
 Alias_Lydia.Clear()
 Alias_Child01.Clear()
@@ -520,12 +583,30 @@ BaboEventWhiterunOrcVisitorsScript kmyQuest = __temp as BaboEventWhiterunOrcVisi
 ;END AUTOCAST
 ;BEGIN CODE
 kmyQuest.DoorSwitch(true)
-(Alias_OrcRaper01.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper02.getRef() as Actor).EvaluatePackage()
-(Alias_OrcRaper03.getRef() as Actor).EvaluatePackage()
-(Alias_Lydia.getRef() as Actor).EvaluatePackage()
-(Alias_Child01.getRef() as Actor).EvaluatePackage()
-(Alias_Child02.getRef() as Actor).EvaluatePackage()
+Actor OrcRaper01Ref = Alias_OrcRaper01.getRef() as Actor
+Actor OrcRaper02Ref = Alias_OrcRaper02.getRef() as Actor
+Actor OrcRaper03Ref = Alias_OrcRaper03.getRef() as Actor
+Actor LydiaRef = Alias_Lydia.getRef() as Actor
+Actor Child01Ref = Alias_Child01.getRef() as Actor
+Actor Child02Ref = Alias_Child02.getRef() as Actor
+if OrcRaper01Ref
+	OrcRaper01Ref.EvaluatePackage()
+endIf
+if OrcRaper02Ref
+	OrcRaper02Ref.EvaluatePackage()
+endIf
+if OrcRaper03Ref
+	OrcRaper03Ref.EvaluatePackage()
+endIf
+if LydiaRef
+	LydiaRef.EvaluatePackage()
+endIf
+if Child01Ref
+	Child01Ref.EvaluatePackage()
+endIf
+if Child02Ref
+	Child02Ref.EvaluatePackage()
+endIf
 kmyQuest.GoStateBefore()
 kmyQuest.RegisterUpdate(4)
 ;END CODE
@@ -551,9 +632,18 @@ EndFunction
 ;BEGIN FRAGMENT Fragment_12
 Function Fragment_12()
 ;BEGIN CODE
-(Alias_Lydia.getRef() as Actor).EvaluatePackage()
-(Alias_Child01.getRef() as Actor).EvaluatePackage()
-(Alias_Child02.getRef() as Actor).EvaluatePackage()
+Actor LydiaRef = Alias_Lydia.getRef() as Actor
+Actor Child01Ref = Alias_Child01.getRef() as Actor
+Actor Child02Ref = Alias_Child02.getRef() as Actor
+if LydiaRef
+	LydiaRef.EvaluatePackage()
+endIf
+if Child01Ref
+	Child01Ref.EvaluatePackage()
+endIf
+if Child02Ref
+	Child02Ref.EvaluatePackage()
+endIf
 ;END CODE
 EndFunction
 ;END FRAGMENT

@@ -574,15 +574,14 @@ EndFunction
 Function Creatureunregister()
 	int iIndex = BaboCreaturePacified.getsize()
 	While iIndex > 0
+		iIndex -= 1
 		Actor akList = BaboCreaturePacified.GetAt(iIndex) as actor
-
-		if !(akList as actor).is3dLoaded()
+		if akList && !akList.is3dLoaded()
 			BaboCreaturePacified.RemoveAddedForm(akList)
 			akList.Removefromfaction(Babopacifiedcreaturefaction)
 			akList.Removefromfaction(BaboTrollAllyFaction)
 			akList.Removefromfaction(BaboCreatureArousedFaction)
 		endIf
-		iIndex -= 1
 	EndWhile
 EndFunction
 

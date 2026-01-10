@@ -28,16 +28,28 @@ Function BaboEventWhiterunOrcVisitorsTriggerEventValue(int value)
 Endfunction
 
 Function AliasClear()
-	(LydiaRef.getreference() as actor).evaluatepackage()
-	(Child1.getreference() as actor).evaluatepackage()
-	(Child2.getreference() as actor).evaluatepackage()
+	if LydiaRef
+		(LydiaRef.getreference() as actor).evaluatepackage()
+	endIf
+	if Child1
+		(Child1.getreference() as actor).evaluatepackage()
+	endIf
+	if Child2
+		(Child2.getreference() as actor).evaluatepackage()
+	endIf
 	LydiaRef.Clear()
 	Child1.Clear()
 	Child2.Clear()
 	
-	OrcRaper01.getreference().deletewhenable()
-	OrcRaper02.getreference().deletewhenable()
-	OrcRaper03.getreference().deletewhenable()
+	if OrcRaper01
+		OrcRaper01.getreference().deletewhenable()
+	endIf
+	if OrcRaper02
+		OrcRaper02.getreference().deletewhenable()
+	endIf
+	if OrcRaper03
+		OrcRaper03.getreference().deletewhenable()
+	endIf
 	OrcRaper01.Clear()
 	OrcRaper02.Clear()
 	OrcRaper03.Clear()
@@ -56,13 +68,25 @@ EndFunction
 
 Function SetEssentialNPC(Bool Switch);WIP
 	if Switch
-		(OrcRaper01.getreference() as actor).GetActorBase().SetEssential(true)
-		(OrcRaper02.getreference() as actor).GetActorBase().SetEssential(true)
-		(OrcRaper03.getreference() as actor).GetActorBase().SetEssential(true)
+		if OrcRaper01
+			(OrcRaper01.getreference() as actor).GetActorBase().SetEssential(true)
+		endIf
+		if OrcRaper02
+			(OrcRaper02.getreference() as actor).GetActorBase().SetEssential(true)
+		endIf
+		if OrcRaper03
+			(OrcRaper03.getreference() as actor).GetActorBase().SetEssential(true)
+		endIf
 	else
-		(OrcRaper01.getreference() as actor).GetActorBase().SetEssential(false)
-		(OrcRaper02.getreference() as actor).GetActorBase().SetEssential(false)
-		(OrcRaper03.getreference() as actor).GetActorBase().SetEssential(false)
+		if OrcRaper01
+			(OrcRaper01.getreference() as actor).GetActorBase().SetEssential(false)
+		endIf
+		if OrcRaper02
+			(OrcRaper02.getreference() as actor).GetActorBase().SetEssential(false)
+		endIf
+		if OrcRaper03
+			(OrcRaper03.getreference() as actor).GetActorBase().SetEssential(false)
+		endIf
 	endif
 endfunction
 
@@ -75,13 +99,25 @@ ChildMarker.ForceRefTo(BaboEvent01XmarkerE)
 EndFunction
 
 Function MoveOrcs()
-(OrcRaper01.getreference() as actor).moveto(BaboEvent01XmarkerA)
-(OrcRaper02.getreference() as actor).moveto(BaboEvent01XmarkerB)
-(OrcRaper03.getreference() as actor).moveto(BaboEvent01XmarkerC)
+	if OrcRaper01
+		(OrcRaper01.getreference() as actor).moveto(BaboEvent01XmarkerA)
+	endIf
+	if OrcRaper02
+		(OrcRaper02.getreference() as actor).moveto(BaboEvent01XmarkerB)
+	endIf
+	if OrcRaper03
+		(OrcRaper03.getreference() as actor).moveto(BaboEvent01XmarkerC)
+	endIf
 
-(LydiaRef.getreference() as actor).moveto(BaboEvent01XmarkerD)
-(Child1.getreference() as actor).moveto(BaboEvent01XmarkerE)
-(Child2.getreference() as actor).moveto(BaboEvent01XmarkerE)
+	if LydiaRef
+		(LydiaRef.getreference() as actor).moveto(BaboEvent01XmarkerD)
+	endIf
+	if Child1
+		(Child1.getreference() as actor).moveto(BaboEvent01XmarkerE)
+	endIf
+	if Child2
+		(Child2.getreference() as actor).moveto(BaboEvent01XmarkerE)
+	endIf
 EndFunction
 
 Function Kidnapping(bool bBigguy)
@@ -96,7 +132,7 @@ OrcRaper03.clear()
 Game.EnablePlayerControls()
 BaboEventOrcRevisitKidnapChance.setvalue(0)
 int randomi = Utility.randomint(11, 13)
-if (BaboSexController as BaboSexControllerManager).KidnapQuestStart(OrcActors[0], OrcActors[1], randomi, None)
+if OrcActors[0] && OrcActors[1] && (BaboSexController as BaboSexControllerManager).KidnapQuestStart(OrcActors[0], OrcActors[1], randomi, None)
 	(BaboKidnapEvent as BaboKidnapEvenScript).FillKidnapperActors(None, None, OrcActors[2], OrcActors[3], OrcActors[4], OrcActors[5], OrcActors[6], None)
 	(BaboKidnapEvent as BaboKidnapEvenScript).FillVictimActors(Victims[0], Victims[1], Victims[2])
 	(BaboKidnapEvent as BaboKidnapEvenScript).StartUptheEvent(10)
@@ -123,13 +159,27 @@ OrcActors = new Actor[7]
 		OrcActors[5] = SpawnPlace.PlaceActorAtMe(BaboOrc03, 4)
 		OrcActors[6] = SpawnPlace.PlaceActorAtMe(BaboOrc04, 4)
 	endif
-	OrcActors[0].addtofaction(BaboEventWhiterunOrcVisitors)
-	OrcActors[1].addtofaction(BaboEventWhiterunOrcVisitors)
-	OrcActors[2].addtofaction(BaboEventWhiterunOrcVisitors)
-	OrcActors[3].addtofaction(BaboEventWhiterunOrcVisitors)
-	OrcActors[4].addtofaction(BaboEventWhiterunOrcVisitors)
-	OrcActors[5].addtofaction(BaboEventWhiterunOrcVisitors)
-	OrcActors[6].addtofaction(BaboEventWhiterunOrcVisitors)
+	if OrcActors[0]
+		OrcActors[0].addtofaction(BaboEventWhiterunOrcVisitors)
+	endIf
+	if OrcActors[1]
+		OrcActors[1].addtofaction(BaboEventWhiterunOrcVisitors)
+	endIf
+	if OrcActors[2]
+		OrcActors[2].addtofaction(BaboEventWhiterunOrcVisitors)
+	endIf
+	if OrcActors[3]
+		OrcActors[3].addtofaction(BaboEventWhiterunOrcVisitors)
+	endIf
+	if OrcActors[4]
+		OrcActors[4].addtofaction(BaboEventWhiterunOrcVisitors)
+	endIf
+	if OrcActors[5]
+		OrcActors[5].addtofaction(BaboEventWhiterunOrcVisitors)
+	endIf
+	if OrcActors[6]
+		OrcActors[6].addtofaction(BaboEventWhiterunOrcVisitors)
+	endIf
 EndFunction
 
 Function SpawnOrcs()
@@ -184,14 +234,10 @@ endif
 IF !LydiaActor.isdead()
 	LydiaRef.ForceRefto(LydiaActor)
 EndIf
-if (OChild1.GetReference() == None)
-	Return
-Else
+if (OChild1.GetReference() != None)
 	OChild1 = Child1
 EndIf
-if (OChild2.GetReference() == None)
-	Return
-Else
+if (OChild2.GetReference() != None)
 	OChild2 = Child2
 EndIf
 EndFunction
@@ -199,6 +245,9 @@ EndFunction
 function AttackPeople(ReferenceAlias AliasToAnger)
 
 	Actor ActorRef = AliasToAnger.GetActorReference()
+	if ActorRef == None
+		return
+	endIf
 	actorRef.RemoveFromFaction(OrcRaperMild)
 	actorRef.addtoFaction(OrcRaperHot)
 	
@@ -261,7 +310,7 @@ Event AfterSexSceneBE(string eventName, string argString, float argNum, form sen
 	Scene01.forceStart()
 	Game.DisablePlayerControls(abmenu = true)
 	PlayerREF.playIdle(OrgasmAfter01)
-	UnregisterForModEvent("AnimationEnd_AfterSexT")
+	UnregisterForModEvent("AnimationEnd_AfterSexTBE")
 EndEvent
 
 String Function CustomSexStringRandom()
@@ -353,9 +402,12 @@ actor Actor01ref = (Actor01.getreference() as actor)
 actor Actor02ref = (Actor02.getreference() as actor)
 actor Actor03ref = (Actor03.getreference() as actor)
 
-Actor01ref.equipitem(Actor01ref.AddItem(BaboEnchOrcishBattleaxeParalysis, 1, true))
-Actor02ref.equipitem(Actor02ref.Additem(BaboEnchOrcishBattleaxeParalysis, 1, true))
-Actor03ref.equipitem(Actor03ref.Additem(BaboEnchOrcishBattleaxeParalysis, 1, true))
+Actor01ref.AddItem(BaboEnchOrcishBattleaxeParalysis, 1, true)
+Actor01ref.EquipItem(BaboEnchOrcishBattleaxeParalysis)
+Actor02ref.AddItem(BaboEnchOrcishBattleaxeParalysis, 1, true)
+Actor02ref.EquipItem(BaboEnchOrcishBattleaxeParalysis)
+Actor03ref.AddItem(BaboEnchOrcishBattleaxeParalysis, 1, true)
+Actor03ref.EquipItem(BaboEnchOrcishBattleaxeParalysis)
 EndFunction
 
 Function AfterWhiterunViceCaptainClearQuest()
@@ -470,6 +522,7 @@ int ri = Utility.randomint(1, 100)
 Actor Orcrapist01
 Actor Orcrapist02
 Actor Orcrapist03
+Actor[] RecycledActors
 
 if (ri <= 40) && BaboEventDebug.getvalue() == 0
 	return false
@@ -500,6 +553,24 @@ else
 		BaboWhiterunOrcVisitorsList.RemoveAddedForm(Orcrapist03)
 	endif
 	
+	RecycledActors = new Actor[3]
+	RecycledActors[0] = Orcrapist01
+	RecycledActors[1] = Orcrapist02
+	RecycledActors[2] = Orcrapist03
+	int i = 0
+	while i < 3
+		if RecycledActors[i]
+			RecycledActors[i].RemoveFromFaction(OrcRaperHot)
+			RecycledActors[i].addtofaction(OrcRaperMild)
+			if RecycledActors[i].GetActorValue("Aggression") > 1
+				RecycledActors[i].SetActorValue("Aggression", 1)
+			endIf
+			RecycledActors[i].StopCombat()
+			RecycledActors[i].StopCombatAlarm()
+		endIf
+		i += 1
+	endWhile
+
 OrcRaper01.forcerefto(Orcrapist01)
 OrcRaper02.forcerefto(Orcrapist02)
 OrcRaper03.forcerefto(Orcrapist03)

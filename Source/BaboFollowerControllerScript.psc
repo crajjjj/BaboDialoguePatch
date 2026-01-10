@@ -45,7 +45,11 @@ int Function PacifyAllFollowers()
 	Int actorCount = 0
 	Actor CurrentFollower
 	Int ii = 0
-	While ii < 6
+	if CurrentFollowerArray == None
+		return actorCount
+	endIf
+	Int count = CurrentFollowerArray.Length
+	While ii < count
 		CurrentFollower = CurrentFollowerArray[ii].GetReference() as Actor
 		If CurrentFollower != None
 			Self.PacifyFollowers(CurrentFollower, true, true)
@@ -65,12 +69,24 @@ Function ClearAllAliases()
 	if IsTieup
 		TieUpFollowers(false)
 	endif
-		PacifyFollowers(PotentialFollower01.getreference() as actor, true, false)
-		PacifyFollowers(PotentialFollower02.getreference() as actor, true, false)
-		PacifyFollowers(PotentialFollower03.getreference() as actor, true, false)
-		PacifyFollowers(PotentialFollower04.getreference() as actor, true, false)
-		PacifyFollowers(PotentialFollower05.getreference() as actor, true, false)
-		PacifyFollowers(PotentialFollower06.getreference() as actor, true, false)
+		if PotentialFollower01
+			PacifyFollowers(PotentialFollower01.getreference() as actor, true, false)
+		endIf
+		if PotentialFollower02
+			PacifyFollowers(PotentialFollower02.getreference() as actor, true, false)
+		endIf
+		if PotentialFollower03
+			PacifyFollowers(PotentialFollower03.getreference() as actor, true, false)
+		endIf
+		if PotentialFollower04
+			PacifyFollowers(PotentialFollower04.getreference() as actor, true, false)
+		endIf
+		if PotentialFollower05
+			PacifyFollowers(PotentialFollower05.getreference() as actor, true, false)
+		endIf
+		if PotentialFollower06
+			PacifyFollowers(PotentialFollower06.getreference() as actor, true, false)
+		endIf
 		
 		PotentialFollower01.clear()
 		PotentialFollower02.clear()
@@ -126,10 +142,12 @@ if Enter
 	akactor.equipitem(BaboGagLogBitNPC, true, false)
 	akactor.equipitem(BaboWristRope01, true, false)
 
-	int i = Utility.randomint(0, 8)
 	akactor.SetRestrained()
 	akactor.SetDontMove(True)
-	akactor.playidle(RestrainIdles[i])
+	if RestrainIdles != None && RestrainIdles.Length > 0
+		int i = Utility.randomint(0, RestrainIdles.Length - 1)
+		akactor.playidle(RestrainIdles[i])
+	endIf
 Else
 	akactor.unequipitem(BaboGagLogBitNPC)
 	akactor.unequipitem(BaboWristRope01)
@@ -146,8 +164,12 @@ EndFunction
 Function TieUpFollowers(Bool Tie = true)
 	Int ii = 0
 	Actor CurrentFollower
+	if CurrentFollowerArray == None
+		return
+	endIf
+	Int count = CurrentFollowerArray.Length
 if Tie
-	While ii < 6
+	While ii < count
 		CurrentFollower = CurrentFollowerArray[ii].GetReference() as Actor
 		if CurrentFollower
 			Self.TieUp(CurrentFollower, true)
@@ -156,19 +178,17 @@ if Tie
 	EndWhile
 	IsTieup = true
 Else
-	While ii < 6
+	While ii < count
 		CurrentFollower = CurrentFollowerArray[ii].GetReference() as Actor
 		if CurrentFollower
-			Self.TieUp(CurrentFollower, false)
-			
 			If CurrentFollower.isinfaction(BaboDialogueFriendFaction)
 				CurrentFollower.RemoveFromFaction(dunPrisonerFaction)
 				CurrentFollower.RemoveFromFaction(BaboDialogueFriendFaction)
 				ActorUtil.RemovePackageOverride(CurrentFollower, DoNothing)
 				CurrentFollower.EvaluatePackage()
-				TieUp(CurrentFollower, false)
 				CurrentFollower.RemoveSpell(BaboCalmSpell)
 			Endif	
+			Self.TieUp(CurrentFollower, false)
 		endif
 
 		ii += 1

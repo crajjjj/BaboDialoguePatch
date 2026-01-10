@@ -472,13 +472,14 @@ int slotsChecked
 slotsChecked += 0x00100000
 slotsChecked += 0x00200000 ;ignore reserved slots
 slotsChecked += 0x80000000
-Int iIndex = KeywordFormList.GetSize()
+Int iIndex
 
 int thisSlot = 0x01
 	while (thisSlot < 0x80000000)
 	if (Math.LogicalAnd(slotsChecked, thisSlot) != thisSlot) ;only check slots we haven't found anything equipped on already
 	Armor thisArmor = target.GetWornForm(thisSlot) as Armor
 	if (thisArmor)
+		iIndex = KeywordFormList.GetSize()
 		While iIndex > 0
 			iIndex -= 1
 			if thisArmor.haskeyword(KeywordFormList.getat(iIndex) as keyword)

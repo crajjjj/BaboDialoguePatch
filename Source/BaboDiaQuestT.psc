@@ -1,4 +1,4 @@
-Scriptname BaboDiaQuest extends Quest  
+Scriptname BaboDiaQuestT extends Quest  
 
 function RapeFemalePlayer(ReferenceAlias Adventurer)
 

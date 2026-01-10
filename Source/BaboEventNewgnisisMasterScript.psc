@@ -186,7 +186,8 @@ Function ConcoctPoison()
 EndFunction
 
 Function Poisoned(actor akactor)
-	akactor.equipitem(akactor.additem(BaboFakeVenom, 1))
+	akactor.additem(BaboFakeVenom, 1)
+	akactor.equipitem(BaboFakeVenom)
 EndFunction
 
 Function AltDefeated(int inum)
