@@ -476,7 +476,13 @@ EndFunction
 
 Function SexCustomActor(Actor Actor01, Actor Actor02, Actor Actor03, Actor Actor04, Actor Actor05, String Tag01, String Tag02, String Tag03, Bool NextScene, String EventRegisterDummy, String EventName, Bool Rape)
 
+	if Actor01 == None || Actor02 == None
+		return
+	endif
 	Actor[] sexActors = MakeActorArray(Actor01, Actor02, Actor03, Actor04, Actor05)
+	if sexActors == None
+		return
+	endif
 	Int ActorCount = sexActors.Length
 	sslBaseAnimation[] anims
 	anims = SexLab.GetAnimationsByTag(ActorCount, "Tag01", "Tag02", "Tag03",  TagSuppress = "Femdom")
@@ -495,7 +501,7 @@ Function SexCustomActor(Actor Actor01, Actor Actor02, Actor Actor03, Actor Actor
 			SexLab.StartSex(sexActors, anims)
 		endif
 	EndIf
-	if sexActors[0] == playerref
+	if playerref && sexActors[0] && sexActors[0] == playerref
 		AddHadSexFaction(sexActors, Rape)
 	endif
 EndFunction
@@ -507,7 +513,13 @@ Function SexCustom(ReferenceAlias ActorRef01, ReferenceAlias ActorRef02, Referen
 	Actor Actor03 = ActorRef03.GetActorReference()
 	Actor Actor04 = ActorRef04.GetActorReference()
 	Actor Actor05 = ActorRef05.GetActorReference()
+	if Actor01 == None || Actor02 == None
+		return
+	endif
 	Actor[] sexActors = MakeActorArray(Actor01, Actor02, Actor03, Actor04, Actor05)
+	if sexActors == None
+		return
+	endif
 	Int ActorCount = sexActors.Length
 	sslBaseAnimation[] anims
 	anims = SexLab.GetAnimationsByTag(ActorCount, "Tag01", "Tag02", "Tag03",  TagSuppress = "Femdom")
@@ -526,14 +538,20 @@ Function SexCustom(ReferenceAlias ActorRef01, ReferenceAlias ActorRef02, Referen
 			SexLab.StartSex(sexActors, anims)
 		endif
 	EndIf
-	if sexActors[0] == playerref
+	if playerref && sexActors[0] && sexActors[0] == playerref
 		AddHadSexFaction(sexActors, Rape)
 	endif
 EndFunction
 
 Function SexCustomActorTag(Actor Actor01, Actor Actor02, Actor Actor03, Actor Actor04, Actor Actor05, String Tag, String SuppressTag, Bool NextScene, String EventRegisterDummy, String EventName, Bool Rape)
 
+	if Actor01 == None || Actor02 == None
+		return
+	endif
 	Actor[] sexActors = MakeActorArray(Actor01, Actor02, Actor03, Actor04, Actor05)
+	if sexActors == None
+		return
+	endif
 	Int ActorCount = sexActors.Length
 	sslBaseAnimation[] anims
 	anims = SexLab.GetAnimationsByTags(ActorCount, Tag, TagSuppress = SuppressTag)
@@ -552,7 +570,7 @@ Function SexCustomActorTag(Actor Actor01, Actor Actor02, Actor Actor03, Actor Ac
 			SexLab.StartSex(sexActors, anims)
 		endif
 	EndIf
-	if sexActors[0] == playerref
+	if playerref && sexActors[0] && sexActors[0] == playerref
 		AddHadSexFaction(sexActors, Rape)
 	endif
 EndFunction
@@ -564,7 +582,13 @@ Function SexCustomTag(ReferenceAlias ActorRef01, ReferenceAlias ActorRef02, Refe
 	Actor Actor03 = ActorRef03.GetActorReference()
 	Actor Actor04 = ActorRef04.GetActorReference()
 	Actor Actor05 = ActorRef05.GetActorReference()
+	if Actor01 == None || Actor02 == None
+		return
+	endif
 	Actor[] sexActors = MakeActorArray(Actor01, Actor02, Actor03, Actor04, Actor05)
+	if sexActors == None
+		return
+	endif
 	Int ActorCount = sexActors.Length
 	sslBaseAnimation[] anims
 	anims = SexLab.GetAnimationsByTags(ActorCount, Tag, TagSuppress = SuppressTag)
@@ -583,7 +607,7 @@ Function SexCustomTag(ReferenceAlias ActorRef01, ReferenceAlias ActorRef02, Refe
 			SexLab.StartSex(sexActors, anims)
 		endif
 	EndIf
-	if sexActors[0] == playerref
+	if playerref && sexActors[0] && sexActors[0] == playerref
 		AddHadSexFaction(sexActors, Rape)
 	endif
 EndFunction
@@ -595,7 +619,13 @@ Function SexCustombyName(ReferenceAlias ActorRef01, ReferenceAlias ActorRef02, R
 	Actor Actor03 = ActorRef03.GetActorReference()
 	Actor Actor04 = ActorRef04.GetActorReference()
 	Actor Actor05 = ActorRef05.GetActorReference()
+	if Actor01 == None || Actor02 == None
+		return
+	endif
 	Actor[] sexActors = MakeActorArray(Actor01, Actor02, Actor03, Actor04, Actor05)
+	if sexActors == None
+		return
+	endif
 	Int ActorCount = sexActors.Length
 
 	sslBaseAnimation[] anims = new sslBaseAnimation[1]
@@ -615,13 +645,16 @@ Function SexCustombyName(ReferenceAlias ActorRef01, ReferenceAlias ActorRef02, R
 			SexLab.StartSex(sexActors, anims)
 		endif
 	EndIf
-	if sexActors[0] == playerref
+	if playerref && sexActors[0] && sexActors[0] == playerref
 		AddHadSexFaction(sexActors, Rape)
 	endif
 EndFunction
 
 Actor[] Function MakeActorArray(Actor Actor1, Actor Actor2, Actor Actor3, Actor Actor4, Actor Actor5)
 	Actor[] sexActors
+	if !Actor1 && !Actor2 && !Actor3 && !Actor4 && !Actor5
+		return None
+	endif
 	If Actor5
 		sexActors = New Actor[5]
 		sexActors[0] = Actor1

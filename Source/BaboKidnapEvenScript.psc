@@ -337,6 +337,20 @@ ReferenceAlias[] Property KidnappersAliases Auto Hidden
 
 Bool bMiscEvent
 
+ObjectReference Function GetAliasRef(ReferenceAlias aliasRef)
+	if aliasRef
+		return aliasRef.GetReference()
+	endif
+	return None
+EndFunction
+
+Actor Function GetAliasActor(ReferenceAlias aliasRef)
+	if aliasRef
+		return aliasRef.GetReference() as Actor
+	endif
+	return None
+EndFunction
+
 Function CheckConfiscate()
 	if BaboKidnapConfiscateChestAccessGlobal.getvalue() == 1
 		ConfiscateAllItems()
@@ -344,59 +358,104 @@ Function CheckConfiscate()
 EndFunction
 
 Function PlaceSlaveOutfit()
-	FoodMarkerA.getreference().PlaceAtMe(BaboListTribalClothes)
+	ObjectReference markerRef = GetAliasRef(FoodMarkerA)
+	if markerRef
+		markerRef.PlaceAtMe(BaboListTribalClothes)
+	endif
 EndFunction
 
 Function PlaceSubWeapon()
-	WeaponMarker.getreference().PlaceAtMe(BaboKidnap1HWeapon)
+	ObjectReference markerRef = GetAliasRef(WeaponMarker)
+	if markerRef
+		markerRef.PlaceAtMe(BaboKidnap1HWeapon)
+	endif
 EndFunction
 
 Function KidnapperAddPerk()
-	(Kidnapper01.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+	Actor kidnapperRef = Kidnapper01.getreference() as actor
+	if kidnapperRef
+		kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+	endif
 	if Kidnapper02
-		(Kidnapper02.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+		kidnapperRef = Kidnapper02.getreference() as actor
+		if kidnapperRef
+			kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+		endif
 	endif
 	if Kidnapper03
-		(Kidnapper03.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+		kidnapperRef = Kidnapper03.getreference() as actor
+		if kidnapperRef
+			kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+		endif
 	endif
 	if Kidnapper04
-		(Kidnapper04.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+		kidnapperRef = Kidnapper04.getreference() as actor
+		if kidnapperRef
+			kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+		endif
 	endif
 	if Kidnapper05
-		(Kidnapper05.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+		kidnapperRef = Kidnapper05.getreference() as actor
+		if kidnapperRef
+			kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+		endif
 	endif
 	if Kidnapper06
-		(Kidnapper06.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+		kidnapperRef = Kidnapper06.getreference() as actor
+		if kidnapperRef
+			kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+		endif
 	endif
 	if Kidnapper07
-		(Kidnapper07.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+		kidnapperRef = Kidnapper07.getreference() as actor
+		if kidnapperRef
+			kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+		endif
 	endif
 	if Kidnapper08
-		(Kidnapper08.getreference() as actor).addperk(BaboDia_WeaktoAdventurerPerk)
+		kidnapperRef = Kidnapper08.getreference() as actor
+		if kidnapperRef
+			kidnapperRef.addperk(BaboDia_WeaktoAdventurerPerk)
+		endif
 	endif
 endfunction
 
 Bool Function FollowersStandby()
 	bool moved = false
 	if Follower01
-		(Follower01.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-		moved = true
+		Actor followerRef = GetAliasActor(Follower01)
+		if followerRef
+			followerRef.moveto(BaboFollowerStandbyMarkerRef)
+			moved = true
+		endif
 	endIf
 	if Follower02
-		(Follower02.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-		moved = true
+		Actor followerRef = GetAliasActor(Follower02)
+		if followerRef
+			followerRef.moveto(BaboFollowerStandbyMarkerRef)
+			moved = true
+		endif
 	endIf
 	if Follower03
-		(Follower03.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-		moved = true
+		Actor followerRef = GetAliasActor(Follower03)
+		if followerRef
+			followerRef.moveto(BaboFollowerStandbyMarkerRef)
+			moved = true
+		endif
 	endIf
 	if Follower04
-		(Follower04.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-		moved = true
+		Actor followerRef = GetAliasActor(Follower04)
+		if followerRef
+			followerRef.moveto(BaboFollowerStandbyMarkerRef)
+			moved = true
+		endif
 	endIf
 	if Follower05
-		(Follower05.getreference() as actor).moveto(BaboFollowerStandbyMarkerRef)
-		moved = true
+		Actor followerRef = GetAliasActor(Follower05)
+		if followerRef
+			followerRef.moveto(BaboFollowerStandbyMarkerRef)
+			moved = true
+		endif
 	endIf
 	if moved
 		return true
@@ -410,39 +469,49 @@ EventCoolTime = 24.0
 EventChance = 10
 kidnapperKill = 0
 
-	if (Kidnapper01.getreference() as actor).isinfaction(BaboBigGuySLFaction)
+	Actor kidnapperRef = Kidnapper01.getreference() as actor
+	if kidnapperRef && kidnapperRef.isinfaction(BaboBigGuySLFaction)
 		SLKeywordB = "Bigguy"
 	else
 		SLKeywordB = "Aggressive"
 	endif
 
-	if Kidnapper03.getreference() as actor
-		(Kidnapper03.getreference() as actor).moveto(KidnapperMarker03.getreference())
+	kidnapperRef = Kidnapper03.getreference() as actor
+	if kidnapperRef
+		kidnapperRef.moveto(KidnapperMarker03.getreference())
 	endif
-	if Kidnapper04.getreference() as actor
-		(Kidnapper04.getreference() as actor).moveto(KidnapperMarker04.getreference())
+	kidnapperRef = Kidnapper04.getreference() as actor
+	if kidnapperRef
+		kidnapperRef.moveto(KidnapperMarker04.getreference())
 	endif
-	if Kidnapper05.getreference() as actor
-		(Kidnapper05.getreference() as actor).moveto(KidnapperMarker05.getreference())
+	kidnapperRef = Kidnapper05.getreference() as actor
+	if kidnapperRef
+		kidnapperRef.moveto(KidnapperMarker05.getreference())
 	endif
-	if Kidnapper06.getreference() as actor
-		(Kidnapper06.getreference() as actor).moveto(KidnapperMarker06.getreference())
+	kidnapperRef = Kidnapper06.getreference() as actor
+	if kidnapperRef
+		kidnapperRef.moveto(KidnapperMarker06.getreference())
 	endif
-	if Kidnapper07.getreference() as actor
-		(Kidnapper07.getreference() as actor).moveto(KidnapperMarker07.getreference())
+	kidnapperRef = Kidnapper07.getreference() as actor
+	if kidnapperRef
+		kidnapperRef.moveto(KidnapperMarker07.getreference())
 	endif
-	if Kidnapper08.getreference() as actor
-		(Kidnapper08.getreference() as actor).moveto(KidnapperMarker08.getreference())
+	kidnapperRef = Kidnapper08.getreference() as actor
+	if kidnapperRef
+		kidnapperRef.moveto(KidnapperMarker08.getreference())
 	endif
 	
-	if OtherVictimA.getreference() as actor
-		(OtherVictimA.getreference() as actor).moveto(KidnapperVictimMarkerA.getreference())
+	Actor victimRef = OtherVictimA.getreference() as actor
+	if victimRef
+		victimRef.moveto(KidnapperVictimMarkerA.getreference())
 	endif
-	if OtherVictimB.getreference() as actor
-		(OtherVictimB.getreference() as actor).moveto(KidnapperVictimMarkerB.getreference())
+	victimRef = OtherVictimB.getreference() as actor
+	if victimRef
+		victimRef.moveto(KidnapperVictimMarkerB.getreference())
 	endif
-	if OtherVictimC.getreference() as actor
-		(OtherVictimC.getreference() as actor).moveto(KidnapperVictimMarkerC.getreference())
+	victimRef = OtherVictimC.getreference() as actor
+	if victimRef
+		victimRef.moveto(KidnapperVictimMarkerC.getreference())
 	endif
 
 endfunction
@@ -522,7 +591,10 @@ Function RescueCaptive(actor akactor, int num)
 EndFunction
 
 Function AliasRapistAddFaction(ReferenceAlias akReference)
-	(akReference.getreference() as actor).addtofaction(SLAX_RapistFaction)
+	Actor akactor = GetAliasActor(akReference)
+	if akactor
+		akactor.addtofaction(SLAX_RapistFaction)
+	endif
 EndFunction
 
 Function AliasDrunkRapistAddList()
@@ -709,14 +781,38 @@ Function Clearallthealiases()
 EndFunction
 
 Function DisposeofCombatActors()
-	(Kidnapper01Combat.getreference() as actor).delete()
-	(Kidnapper02Combat.getreference() as actor).delete()
-	(Kidnapper03Combat.getreference() as actor).delete()
-	(Kidnapper04Combat.getreference() as actor).delete()
-	(Kidnapper05Combat.getreference() as actor).delete()
-	(Kidnapper06Combat.getreference() as actor).delete()
-	(Kidnapper07Combat.getreference() as actor).delete()
-	(Kidnapper08Combat.getreference() as actor).delete()
+	Actor combatRef = GetAliasActor(Kidnapper01Combat)
+	if combatRef
+		combatRef.delete()
+	endif
+	combatRef = GetAliasActor(Kidnapper02Combat)
+	if combatRef
+		combatRef.delete()
+	endif
+	combatRef = GetAliasActor(Kidnapper03Combat)
+	if combatRef
+		combatRef.delete()
+	endif
+	combatRef = GetAliasActor(Kidnapper04Combat)
+	if combatRef
+		combatRef.delete()
+	endif
+	combatRef = GetAliasActor(Kidnapper05Combat)
+	if combatRef
+		combatRef.delete()
+	endif
+	combatRef = GetAliasActor(Kidnapper06Combat)
+	if combatRef
+		combatRef.delete()
+	endif
+	combatRef = GetAliasActor(Kidnapper07Combat)
+	if combatRef
+		combatRef.delete()
+	endif
+	combatRef = GetAliasActor(Kidnapper08Combat)
+	if combatRef
+		combatRef.delete()
+	endif
 	Kidnapper01Combat.clear()
 	Kidnapper02Combat.clear()
 	Kidnapper03Combat.clear()
@@ -830,28 +926,52 @@ EndFunction
 
 Function Dumptheactors()
 	if Kidnapper01
-		(Kidnapper01.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper01)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 	if Kidnapper02
-		(Kidnapper02.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper02)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 	if Kidnapper03
-		(Kidnapper03.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper03)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 	if Kidnapper04
-		(Kidnapper04.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper04)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 	if Kidnapper05
-		(Kidnapper05.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper05)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 	if Kidnapper06
-		(Kidnapper06.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper06)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 	if Kidnapper07
-		(Kidnapper07.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper07)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 	if Kidnapper08
-		(Kidnapper08.getreference() as actor).moveto(BaboDumpsterRef)
+		Actor kidnapperRef = GetAliasActor(Kidnapper08)
+		if kidnapperRef
+			kidnapperRef.moveto(BaboDumpsterRef)
+		endif
 	endif
 EndFunction
 
@@ -916,72 +1036,96 @@ endWhile
 EndFunction
 
 Function PlaceFoodSoup(int Menu, int Times, Bool RandomMenu = false, referencealias placemarker)
+	ObjectReference markerRef = GetAliasRef(placemarker)
+	if !markerRef
+		return
+	endif
 int i = 0
 While i < Times
 if RandomMenu
 	Menu = Utility.randomint(0, BaboEdibleSoupFormList.GetSize() - 1)
 endif
-	placemarker.getreference().Placeatme(BaboEdibleSoupFormList.getat(Menu), 1)
+	markerRef.Placeatme(BaboEdibleSoupFormList.getat(Menu), 1)
 	Utility.wait(0.5)
 i += 1
 endWhile
 EndFunction
 
 Function PlaceFoodTrash(int Menu, int Times, Bool RandomMenu = false, referencealias placemarker)
+	ObjectReference markerRef = GetAliasRef(placemarker)
+	if !markerRef
+		return
+	endif
 int i = 0
 While i < Times
 if RandomMenu
 	Menu = Utility.randomint(0, BaboEdibleTrashFormList.GetSize() - 1)
 endif
-	placemarker.getreference().Placeatme(BaboEdibleTrashFormList.getat(Menu), 1)
+	markerRef.Placeatme(BaboEdibleTrashFormList.getat(Menu), 1)
 	Utility.wait(0.5)
 i += 1
 endWhile
 EndFunction
 
 Function PlaceEscapeTool(int Menu, int Times, Bool RandomMenu = false, referencealias placemarker)
+	ObjectReference markerRef = GetAliasRef(placemarker)
+	if !markerRef
+		return
+	endif
 int i = 0
 While i < Times
 if RandomMenu
 	Menu = Utility.randomint(0, BaboEscapeToolFormList.GetSize() - 1)
 endif
-	placemarker.getreference().Placeatme(BaboEscapeToolFormList.getat(Menu), 1)
+	markerRef.Placeatme(BaboEscapeToolFormList.getat(Menu), 1)
 	Utility.wait(0.5)
 i += 1
 endWhile
 EndFunction
 
 Function PlaceFoodSuspicious(int Menu, int Times, Bool RandomMenu = false, referencealias placemarker)
+	ObjectReference markerRef = GetAliasRef(placemarker)
+	if !markerRef
+		return
+	endif
 int i = 0
 While i < Times
 if RandomMenu
 	Menu = Utility.randomint(0, BaboEdibleSuspiciousFormList.GetSize() - 1)
 endif
-	placemarker.getreference().Placeatme(BaboEdibleSuspiciousFormList.getat(Menu), 1)
+	markerRef.Placeatme(BaboEdibleSuspiciousFormList.getat(Menu), 1)
 	Utility.wait(0.5)
 i += 1
 endWhile
 EndFunction
 
 Function PlaceFoodCheap(int Menu, int Times, Bool RandomMenu = false, referencealias placemarker)
+	ObjectReference markerRef = GetAliasRef(placemarker)
+	if !markerRef
+		return
+	endif
 int i = 0
 While i < Times
 if RandomMenu
 	Menu = Utility.randomint(0, BaboEdibleCheapFormList.GetSize() - 1)
 endif
-	placemarker.getreference().Placeatme(BaboEdibleCheapFormList.getat(Menu), 1)
+	markerRef.Placeatme(BaboEdibleCheapFormList.getat(Menu), 1)
 	Utility.wait(0.5)
 i += 1
 endWhile
 EndFunction
 
 Function PlaceDrink(int Menu, int Times, Bool RandomMenu = false, referencealias placemarker)
+	ObjectReference markerRef = GetAliasRef(placemarker)
+	if !markerRef
+		return
+	endif
 int i = 0
 While i < Times
 if RandomMenu
 	Menu = Utility.randomint(0, BaboEdibleWaterFormList.GetSize() - 1)
 endif
-	placemarker.getreference().Placeatme(BaboEdibleWaterFormList.getat(Menu), 1)
+	markerRef.Placeatme(BaboEdibleWaterFormList.getat(Menu), 1)
 	Utility.wait(0.5)
 i += 1
 endWhile
@@ -1015,31 +1159,39 @@ Function SetAllSetstoDefault()
 EndFunction
 
 Function PlayBaboAnimation(Referencealias akactorRef, string AnimationName)
-	Debug.sendanimationevent(akactorRef.getreference() as actor, AnimationName)
+	Actor targetRef = GetAliasActor(akactorRef)
+	if targetRef
+		Debug.sendanimationevent(targetRef, AnimationName)
+	endif
 EndFunction
 
 Function SetvehicleRef(Referencealias akactorRef, Referencealias ObjMarker)
+	ObjectReference markerRef = None
+	if ObjMarker
+		markerRef = GetAliasRef(ObjMarker)
+	endif
 	if !akactorRef
-		if ObjMarker
-			PlayerRef.SetVehicle(ObjMarker.getreference())
-		else
-			PlayerRef.SetVehicle(None)
-		endif
+		PlayerRef.SetVehicle(markerRef)
 	else
-		if ObjMarker
-			(akactorRef.getreference() as actor).SetVehicle(ObjMarker.getreference())
-		else
-			(akactorRef.getreference() as actor).SetVehicle(None)
+		Actor targetRef = GetAliasActor(akactorRef)
+		if targetRef
+			targetRef.SetVehicle(markerRef)
 		endif
 	endif
 EndFunction
 
 Function PlayerTalkXmarkerStart()
-	PlayerTalkXmarker.Getreference().moveto(PlayerRef)
+	ObjectReference markerRef = GetAliasRef(PlayerTalkXmarker)
+	if markerRef
+		markerRef.moveto(PlayerRef)
+	endif
 EndFunction
 
 Function PlayerTalkXmarkerReturn()
-	PlayerTalkXmarker.Getreference().moveto(BaboXmarkerHomeRef)
+	ObjectReference markerRef = GetAliasRef(PlayerTalkXmarker)
+	if markerRef
+		markerRef.moveto(BaboXmarkerHomeRef)
+	endif
 EndFunction
 
 Function Nocollision(Referencealias akactorRef)
@@ -1047,7 +1199,10 @@ actor akactor
 	if !akactorRef
 		akactor = PlayerRef
 	else
-		akactor = akactorRef.getreference() as actor
+		akactor = GetAliasActor(akactorRef)
+		if !akactor
+			return
+		endif
 	endif
 	(BaboSexController as BaboSexControllerManager).PrecisionCheck(akactor, true)
 	if akactor == PlayerRef
@@ -1071,7 +1226,10 @@ EndFunction
 Function YesCollision(Referencealias akactorRef, string AnimationName)
 	actor akactor
 	if akactorRef
-		akactor = akactorRef.getreference() as actor
+		akactor = GetAliasActor(akactorRef)
+		if !akactor
+			return
+		endif
 	else
 		akactor = PlayerRef
 	endif
@@ -1174,15 +1332,24 @@ EndFunction
 
 Function RecoverEquipments()
 	BaboTempStolenGoodsRef.removeallitems(playerref, false, true)
-	ConfiscateChest.getreference().removeallitems(playerref, false, true)
+	ObjectReference chestRef = GetAliasRef(ConfiscateChest)
+	if chestRef
+		chestRef.removeallitems(playerref, false, true)
+	endif
 EndFunction
 
 Function TransferAllItems()
-	BaboTempStolenGoodsRef.removeallitems(ConfiscateChest.getreference(), false, true)
+	ObjectReference chestRef = GetAliasRef(ConfiscateChest)
+	if chestRef
+		BaboTempStolenGoodsRef.removeallitems(chestRef, false, true)
+	endif
 EndFunction
 
 Function ConfiscateAllItems()
-	PlayerRef.removeallitems(ConfiscateChest.getreference(), false, false)
+	ObjectReference chestRef = GetAliasRef(ConfiscateChest)
+	if chestRef
+		PlayerRef.removeallitems(chestRef, false, false)
+	endif
 EndFunction
 
 Function CurrentlyCaptured(Bool Captured)
@@ -1464,32 +1631,49 @@ Function ResetSetRoom()
 	BaboPrisonerDetectorGlobal.setvalue(0)
 	(BaboSexController as BaboSexControllerManager).AppearanceCalc();Check Player Appearance
 	if SweepAreaA
-		SweepAreaA.getreference().disable()
-		SweepAreaB.getreference().disable()
-		SweepAreaC.getreference().disable()
+		ObjectReference sweepRef = GetAliasRef(SweepAreaA)
+		if sweepRef
+			sweepRef.disable()
+		endif
+	endif
+	if SweepAreaB
+		ObjectReference sweepRef = GetAliasRef(SweepAreaB)
+		if sweepRef
+			sweepRef.disable()
+		endif
+	endif
+	if SweepAreaC
+		ObjectReference sweepRef = GetAliasRef(SweepAreaC)
+		if sweepRef
+			sweepRef.disable()
+		endif
 	endif
 	ClearSnareTrap()
 	LockDurability = 100
 EndFunction
 
 Function CheckLocationAndKey(actor akactor, ReferenceAlias akKidnapper)
+	Actor kidnapperRef = GetAliasActor(akKidnapper)
+	if !kidnapperRef
+		return
+	endif
 
 	if akactor.getcurrentlocation() == BaboKidnapperLocation01
-		(akKidnapper.getreference() as actor).additem(BaboKidnapHouse01Key, 1)
+		kidnapperRef.additem(BaboKidnapHouse01Key, 1)
 	elseif akactor.getcurrentlocation() == BaboKidnapperLocation02
-		(akKidnapper.getreference() as actor).additem(BaboKidnapHouse02Key, 1)
+		kidnapperRef.additem(BaboKidnapHouse02Key, 1)
 	elseif akactor.getcurrentlocation() == BaboKidnapperLocation03
-		(akKidnapper.getreference() as actor).additem(BaboKidnapHouse03Key, 1)
+		kidnapperRef.additem(BaboKidnapHouse03Key, 1)
 	elseif akactor.getcurrentlocation() == BaboSlaverLocation01
-		(akKidnapper.getreference() as actor).additem(BaboSlaverHouse01Key, 1)
+		kidnapperRef.additem(BaboSlaverHouse01Key, 1)
 	elseif akactor.getcurrentlocation() == BaboSlaverLocation02
-		(akKidnapper.getreference() as actor).additem(BaboSlaverHouse02Key, 1)
+		kidnapperRef.additem(BaboSlaverHouse02Key, 1)
 	elseif akactor.getcurrentlocation() == BaboSlaverLocation03
-		(akKidnapper.getreference() as actor).additem(BaboSlaverHouse03Key, 1)
+		kidnapperRef.additem(BaboSlaverHouse03Key, 1)
 	elseif akactor.getcurrentlocation() == BaboSlaverLocation04
-		(akKidnapper.getreference() as actor).additem(BaboSlaverHouse04Key, 1)
+		kidnapperRef.additem(BaboSlaverHouse04Key, 1)
 	elseif akactor.getcurrentlocation() == BaboSlaverNobleHouseLocation01
-		(akKidnapper.getreference() as actor).additem(BaboSlaverNobleHouse01Key, 1)
+		kidnapperRef.additem(BaboSlaverNobleHouse01Key, 1)
 	endif
 
 EndFunction
@@ -1506,16 +1690,16 @@ Function RemovealltheKey()
 EndFunction
 
 Function AssignActors()
-	akactor01 = Kidnapper01.getreference() as actor
-	akactor02 = Kidnapper02.getreference() as actor
-	akactor03 = Kidnapper03.getreference() as actor
+	akactor01 = GetAliasActor(Kidnapper01)
+	akactor02 = GetAliasActor(Kidnapper02)
+	akactor03 = GetAliasActor(Kidnapper03)
 	;Debug.Notification("Akactor03 is " + akactor03.GetBaseObject().GetName())
-	akactor04 = Kidnapper04.getreference() as actor
+	akactor04 = GetAliasActor(Kidnapper04)
 	;Debug.Notification("Akactor04 is " + akactor04.GetBaseObject().GetName())
-	akactor05 = Kidnapper05.getreference() as actor
-	akactor06 = Kidnapper06.getreference() as actor
-	akactor07 = Kidnapper07.getreference() as actor
-	akactor08 = Kidnapper08.getreference() as actor
+	akactor05 = GetAliasActor(Kidnapper05)
+	akactor06 = GetAliasActor(Kidnapper06)
+	akactor07 = GetAliasActor(Kidnapper07)
+	akactor08 = GetAliasActor(Kidnapper08)
 EndFunction
 
 Function AssignCharacter()
@@ -1555,11 +1739,15 @@ Function OnLOSRegister()
 EndFunction
 
 Function GivePunishment(int istage, actor akactor)
+	Actor playerReff = GetAliasActor(PlayerAlias)
+	if !playerReff
+		return
+	endif
 
 if istage == 1;blowjob
-	(BaboSexController as BaboSexControllerManager).SexCustomActor(PlayerAlias.getreference() as actor, akactor, None, None, None, "MF", "Aggressive", "Blowjob", True, "", "", True)
+	(BaboSexController as BaboSexControllerManager).SexCustomActor(playerReff, akactor, None, None, None, "MF", "Aggressive", "Blowjob", True, "", "", True)
 elseif istage == 2;sex
-	(BaboSexController as BaboSexControllerManager).SexCustomActor(PlayerAlias.getreference() as actor, akactor, None, None, None, SLKeywordA, SLKeywordB, SLKeywordC, True, "", "", True)
+	(BaboSexController as BaboSexControllerManager).SexCustomActor(playerReff, akactor, None, None, None, SLKeywordA, SLKeywordB, SLKeywordC, True, "", "", True)
 elseif istage == 3;sex
 
 elseif istage == 4;drug
@@ -1579,9 +1767,16 @@ Function AfterKidnapEvent(int istage)
 if istage == 1
 
 else;MarkerA
-	PlayerRef.moveto(CenterMarkerPlayer.getreference())
-	(Kidnapper01.getreference() as actor).moveto(KidnapperMarker01.getreference())
-	(Kidnapper01.getreference() as actor).evaluatepackage()
+	ObjectReference centerRef = GetAliasRef(CenterMarkerPlayer)
+	if centerRef
+		PlayerRef.moveto(centerRef)
+	endif
+	Actor kidnapperRef = GetAliasActor(Kidnapper01)
+	ObjectReference markerRef = GetAliasRef(KidnapperMarker01)
+	if kidnapperRef && markerRef
+		kidnapperRef.moveto(markerRef)
+		kidnapperRef.evaluatepackage()
+	endif
 	(BaboSexController as BaboSexControllerManager).RecoverControl(true)
 	RegisterForSingleUpdateGameTime(3.0)
 endif
@@ -1641,7 +1836,10 @@ EndFunction
 Function BedRollSleep()
 	if GameHour.value >= 22.0 || GameHour.value < 7.0
 		RegisterForSleep()
-		FurnitureSafeA.getreference().activate(PlayerRef);Sleep
+		ObjectReference bedRef = GetAliasRef(FurnitureSafeA)
+		if bedRef
+			bedRef.activate(PlayerRef);Sleep
+		endif
 	;elseif (GameHour.value >= 12.0 && GameHour.value < 18.0) && BaboActorDetectorGlobal.getvalue() == 1
 		;SetGameHourCustom(false, 18.0)
 	endif

@@ -548,3 +548,8 @@ dist/Core/Interface/translations/SexLabAroused_rename.bat
 skyrimse.ppj
 /dependencies
 /scripts
+/Seq
+/Interface
+/SKSE
+/Textures
+/sound
