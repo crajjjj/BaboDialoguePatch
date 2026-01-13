@@ -56,11 +56,17 @@ Function OffTimer()
 EndFunction
 	
 Event OnUpdateGameTime()
-	if (CreatureRef.getreference() as actor).Is3DLoaded() && (OwnerRef.getreference() as actor).Is3DLoaded()
+	Actor creatureActorRef = CreatureRef.getreference() as actor
+	Actor ownerActorRef = OwnerRef.getreference() as actor
+	if creatureActorRef == None || ownerActorRef == None
+		BaboEventAnimalCare.setstage(255)
+		return
+	endif
+	if creatureActorRef.Is3DLoaded() && ownerActorRef.Is3DLoaded()
 		SetTimer(1.0)
 	elseif BaboEventAnimalCare.getstage() < 20 || BaboEventAnimalCare.getstage() >= 100
 		BaboEventAnimalCare.setstage(255)
-	elseif (CreatureRef.getreference() as actor).Is3DLoaded() && !(OwnerRef.getreference() as actor).Is3DLoaded()
+	elseif creatureActorRef.Is3DLoaded() && !ownerActorRef.Is3DLoaded()
 		(BaboSexController as BaboSexControllerManager).ReputationDecrease(30, 10)
 		CrimeFactionWhiterun.modcrimegold(3000)
 		MyHorse()
@@ -151,7 +157,6 @@ BaboTalkingActivatorCreatureRef.moveto(BaboMiscCellXmarker)
 int choice = BaboAnimalCareCheckup.Show()
 CreatureActor = CreatureRef.getreference() as actor
 int chance = (BaboSexController as BaboSexControllerManager).CalcPlayerAttractiveness()
-UpdateKeyRegistery(true)
 	
 	if BaboEventAnimalCare.getstage() == 25
 		FinalInspection()
@@ -163,6 +168,7 @@ UpdateKeyRegistery(true)
 			BaboAnimalCareCheckupDone.show()
 		else
 			ChoiceMask = Math.LogicalOr(ChoiceMask, ChoiceA)
+			UpdateKeyRegistery(true)
 			(BaboSexController as BaboSexControllerManager).FadeinScene(false)
 			PlayingAnimation = true
 			if chance < 100
@@ -200,6 +206,7 @@ UpdateKeyRegistery(true)
 			BaboAnimalCareCheckupDone.show()
 		else
 			ChoiceMask = Math.LogicalOr(ChoiceMask, ChoiceB)
+			UpdateKeyRegistery(true)
 			(BaboSexController as BaboSexControllerManager).FadeinScene(false)
 			PlayingAnimation = true
 			if chance < 100
