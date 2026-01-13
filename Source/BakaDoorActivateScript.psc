@@ -1,20 +1,33 @@
 Scriptname BakaDoorActivateScript extends ObjectReference  
 
 Event Onactivate(ObjectReference akActionRef)
-if akActionRef == PlayerRef
+	if PlayerRef == None
+		return
+	endif
+	if akActionRef == PlayerRef
 	int choice
-if BaboEventQuest.getstage() >= ConditionalStage
-	choice = BaboDoorEscapeMessage.Show()
+		if BaboEventQuest == None
+			return
+		endif
+		if BaboEventQuest.getstage() >= ConditionalStage
+			if BaboDoorEscapeMessage == None
+				return
+			endif
+			choice = BaboDoorEscapeMessage.Show()
 	if (choice == 0)
 		if NextStageSwitch
 			BaboEventQuest.setstage(NextStage)
 		endif
-		PlayerRef.moveto(RecoverMarker)
+				if RecoverMarker != None
+					PlayerRef.moveto(RecoverMarker)
+				endif
 	endif
-else
-	choice = BaboDoorNotYetMessage.Show()
-endif
-endif
+		else
+			if BaboDoorNotYetMessage != None
+				choice = BaboDoorNotYetMessage.Show()
+			endif
+		endif
+	endif
 EndEvent
 
 actor property PlayerRef auto

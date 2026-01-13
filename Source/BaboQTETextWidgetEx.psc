@@ -38,6 +38,9 @@ Function UpdateWidgets()
 	if !WidgetsInitialized;Temporary removal for test
 		return
 	endif
+	if TextWidgets.Length < 2
+		return
+	endif
 
 	if IsFail
 		TextWidgets[1].Text = ""
@@ -58,6 +61,7 @@ EndFunction
 
 Function SetParameter(string msg, float difficulty)
 	IsSuccess = false
+	IsFail = false
 	_qteMessage = msg
 	;Debug.Notification("SetParameter" + msg)
 	int n = (difficulty * Utility.RandomFloat(1.0, 1.2) + 0.5) as int
@@ -90,11 +94,19 @@ EndFunction
 string Function GetCommandString()
 	string ret = ""
 	_characterTypeArray = MCM.GetCharacterTypeArray()
+	if _commandList == None || _characterTypeArray == None
+		return ret
+	endif
+	int charLen = _characterTypeArray.Length
 
 	int n = _commandList.Length
 	int i = _currentPos
 	while i < n
-		ret += _characterTypeArray[_commandList[i]]
+		int cmdIndex = _commandList[i]
+		if cmdIndex < 0 || cmdIndex >= charLen
+			return ret
+		endif
+		ret += _characterTypeArray[cmdIndex]
 		i += 1
 	endWhile
 
@@ -102,14 +114,14 @@ string Function GetCommandString()
 EndFunction
 
 int Function GetDirection(int keyCode)
-	int dir = 0
+	int dir = -1
 	if keyCode == 279 || keyCode == 266 || keyCode == MCM.BaboQTECustomKeyUp
 		dir = 0
 	elseif keyCode == 276 || keyCode == 267 || keyCode == MCM.BaboQTECustomKeyDown
 		dir = 1
 	elseif keyCode == 278 || keyCode == 268 || keyCode == MCM.BaboQTECustomKeyLeft
 		dir = 2
-	else
+	elseif keyCode == 277 || keyCode == 269 || keyCode == MCM.BaboQTECustomKeyRight
 		dir = 3
 	endif
 	return dir
@@ -119,13 +131,20 @@ Event OnKeyDown(int keyCode)
 	if IsSuccess || IsFail
 		return
 	endif
+	if _commandList == None || _commandList.Length == 0
+		return
+	endif
 
 	int dir = GetDirection(keyCode)
+	if dir < 0
+		return
+	endif
 
 	if _commandList[_currentPos] == dir
 		_currentPos += 1
 		if _currentPos == _commandList.Length
 			IsSuccess = true
+			UnregisterForAllKeys()
 			;Debug.Notification("IsSuccess")
 		endif
 	else

@@ -58,7 +58,10 @@ Event oninit()
 	endif
 	
 	;###############SE#################
-	PO3_Events_Alias.RegisterForHitEventEx(self, Foe01.getreference(), None, None, -1, -1, -1, -1, true)
+	ObjectReference foeRef = Foe01.getreference()
+	if foeRef != None
+		PO3_Events_Alias.RegisterForHitEventEx(self, foeRef, None, None, -1, -1, -1, -1, true)
+	endif
 	;###############SE#################
 EndEvent
 
@@ -90,12 +93,16 @@ Function RegisterOnHitExExtra(form akfilter)
 EndFunction
 
 Function Defeated()
+	Actor playerActorRef = (Self.getreference() as actor)
+	if playerActorRef == None
+		return
+	endif
 	BaboBrawlingDefeatedMsg.show()
 	Game.ForceThirdPerson()
-	(Self.getreference() as actor).RestoreActorValue("health", 100)
+	playerActorRef.RestoreActorValue("health", 100)
 	Game.DisablePlayerControls(abmenu =true)
 	Utility.Wait(0.5)
-	(Self.getreference() as actor).PlayIdle(Knockout)
+	playerActorRef.PlayIdle(Knockout)
 
 		If NexStage01Switch == True
 			Self.GetOwningQuest().SetStage(NextStage01)
@@ -115,21 +122,29 @@ EndFunction
 Function DamageCalculation(ObjectReference akAggressor)
 
 	If GetOwningQuest().GetStage() == StartStage || GetOwningQuest().GetStage() == StartStage02
+		if akAggressor == None
+			return
+		endif
 		If akAggressor.haskeyword(BaboStripper) || Yeskeyword == False
-			If	FoeSwitch == False || (Foe01.getref() as actor).isdead() == False
+			Actor foeActorRef = (Foe01.getref() as actor)
+			If	FoeSwitch == False || (foeActorRef != None && foeActorRef.isdead() == False)
 				Defeated()
 			Else
 				;Now you can die
 				BaboBrawlingDefeatedStandUpMsg.show()
 				Game.ForceThirdPerson()
-				(Self.getreference() as actor).RestoreActorValue("health", 10)
+				Actor playerActorRef = (Self.getreference() as actor)
+				if playerActorRef == None
+					return
+				endif
+				playerActorRef.RestoreActorValue("health", 10)
 				Game.DisablePlayerControls(abmenu =true)
 				Utility.Wait(0.5)
-				(Self.getreference() as actor).PlayIdle(Knockout02)
+				playerActorRef.PlayIdle(Knockout02)
 				Utility.Wait(5.0)
-				(Self.getreference() as actor).RestoreActorValue("health", 5)
+				playerActorRef.RestoreActorValue("health", 5)
 				Game.EnablePlayerControls(abmenu =true)
-				(Self.getreference() as actor).PlayIdle(StaggerStart)
+				playerActorRef.PlayIdle(StaggerStart)
 			EndIf
 		EndIf
 	EndIf
@@ -155,8 +170,15 @@ EndFunction
 Event OnHitEx(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
 ;###############SE#################
 
-CurrentHealth = (Self.getreference() as actor).GetActorValue("health")
-BaseHealth = (Self.getreference() as actor).GetBaseActorValue("health")
+Actor playerActorRef = (Self.getreference() as actor)
+if playerActorRef == None
+	return
+endif
+CurrentHealth = playerActorRef.GetActorValue("health")
+BaseHealth = playerActorRef.GetBaseActorValue("health")
+if BaseHealth <= 0
+	return
+endif
 playersHealth = (CurrentHealth / BaseHealth) * 100
 
 If PlayersHealth < 0

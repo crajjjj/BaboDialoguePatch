@@ -14,5 +14,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 	if Magnitude == 0
 		Magnitude = 0.5
 	endif
-	(BaboSexController as BaboSexControllerManager).FHUInflationEvent(akTarget as form, None, true, iCumType, Magnitude, 1.0, "")
+	if akTarget
+		(BaboSexController as BaboSexControllerManager).FHUInflationEvent(akTarget as form, None, true, iCumType, Magnitude, 1.0, "")
+	endif
 EndEvent

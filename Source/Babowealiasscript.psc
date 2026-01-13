@@ -49,9 +49,17 @@ Event OnUpdate()
 
 	if MakeAggressiveOnDistanceToPlayer > 0
 	
-		if GetReference().GetDistance(Game.GetPlayer()) < MakeAggressiveOnDistanceToPlayer
+		ObjectReference selfRef = GetReference()
+		Actor playerRef = Game.GetPlayer()
+		if selfRef == None || playerRef == None
+			return
+		endif
+		if selfRef.GetDistance(playerRef) < MakeAggressiveOnDistanceToPlayer
 ; 			;debug.trace(self + "OnUpdate() player is within MakeAggressiveOnDistanceToPlayer [ " + MakeAggressiveOnDistanceToPlayer + "], making aggressive to player.")
-			(GetOwningQuest() as WEScript).makeAliasAggressiveAndAttackPlayer(self)
+			WEScript weQuest = (GetOwningQuest() as WEScript)
+			if weQuest != None
+				weQuest.makeAliasAggressiveAndAttackPlayer(self)
+			endif
 		Else
 	
 ; 			;debug.trace(self + "OnUpdate() player isn't close enough, so calling RegisterForSingleUpdate(1) to poll again later.")
@@ -66,15 +74,21 @@ EndEvent
 
 Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
 	if MakeAggressiveAndAttackPlayerIfAttacked && akAggressor == Game.GetPlayer()
-		(GetOwningQuest() as WEScript).makeAliasAggressiveAndAttackPlayer(self)
+		WEScript weQuest = (GetOwningQuest() as WEScript)
+		if weQuest != None
+			weQuest.makeAliasAggressiveAndAttackPlayer(self)
+		endif
 	
 	EndIf
 
 EndEvent
 
 Event OnGainLOS(Actor akViewer, ObjectReference akTarget)
-	if akViewer == GetActorReference() && akTarget == Game.GetPlayer() as Actor
-		(GetOwningQuest() as WEScript).makeAliasAggressiveAndAttackPlayer(self)
+	if MakeAggressiveOnGainLOSToPlayer && akViewer == GetActorReference() && akTarget == Game.GetPlayer() as Actor
+		WEScript weQuest = (GetOwningQuest() as WEScript)
+		if weQuest != None
+			weQuest.makeAliasAggressiveAndAttackPlayer(self)
+		endif
 	EndIf
 EndEvent
 
@@ -97,6 +111,7 @@ EndEvent
 
 Event OnLoad()
 	TryToAttach()
+	Actor selfActorRef = GetActorReference()
 
 	if InitiallyDisabled && DisabledOnce == False
 ; 		;debug.trace(self + "OnLoad() calling TryToDisable()")
@@ -106,7 +121,9 @@ Event OnLoad()
 
 	if MakeAggressiveOnGainLOSToPlayer
 ; 		;debug.trace(self + "OnLoad() calling RegisterForSingleLOSGain(GetActorReference(), Game.GetPlayer() as Actor)")
-		RegisterForSingleLOSGain(GetActorReference(), Game.GetPlayer() as Actor)
+		if selfActorRef != None
+			RegisterForSingleLOSGain(selfActorRef, Game.GetPlayer() as Actor)
+		endif
 	
 	EndIf
 
@@ -116,15 +133,18 @@ Event OnLoad()
 	EndIf
 		
 	if PacifyOnLoad
-		(GetOwningQuest() as WEScript).pacifyAlias(self)
+		WEScript weQuest = (GetOwningQuest() as WEScript)
+		if weQuest != None
+			weQuest.pacifyAlias(self)
+		endif
 	EndIf
 
-	if PutInThisFactionOnLoad
-		GetActorReference().AddToFaction(PutInThisFactionOnLoad)
+	if PutInThisFactionOnLoad && selfActorRef != None
+		selfActorRef.AddToFaction(PutInThisFactionOnLoad)
 	EndIf
 	
-	if KillOnLoad || DisintegrateOnLoad
-		GetActorReference().kill()
+	if (KillOnLoad || DisintegrateOnLoad) && selfActorRef != None
+		selfActorRef.kill()
 	EndIf
 	
 ; 	;debug.trace(self + "OnLoad()")
@@ -133,20 +153,29 @@ EndEvent
 
 Event OnDying(Actor akKiller)
 	if (DisintegrateOnLoad)
-		GetActorReference().SetAlpha(0, False)
-		GetActorReference().SetCriticalStage(GetActorReference().CritStage_DisintegrateEnd)
-		GetActorReference().AttachAshPile(DefaultAshPile1)
+		Actor selfActorRef = GetActorReference()
+		if selfActorRef == None
+			return
+		endif
+		selfActorRef.SetAlpha(0, False)
+		selfActorRef.SetCriticalStage(selfActorRef.CritStage_DisintegrateEnd)
+		if DefaultAshPile1 != None
+			selfActorRef.AttachAshPile(DefaultAshPile1)
+		endif
 		Utility.Wait(1.65)
-		GetActorReference().SetCriticalStage(GetActorReference().CritStage_DisintegrateEnd)
+		selfActorRef.SetCriticalStage(selfActorRef.CritStage_DisintegrateEnd)
 	EndIf
 EndEvent
 
 Event OnUnload()
 	if RequireStage
-		if DisableOnUnload && GetOwningQuest().getstage() <= RequiredStage
+		if DisableOnUnload && GetOwningQuest() != None && GetOwningQuest().getstage() <= RequiredStage
 	; 		;debug.trace(self + "OnUnload() calling Disable()")
 			TryToDetach()
-			GetReference().Disable()
+			ObjectReference selfRef = GetReference()
+			if selfRef != None
+				selfRef.Disable()
+			endif
 		EndIf
 	endif
 EndEvent
@@ -163,7 +192,10 @@ Function TryToAttach()
 		;*** increment and do stuff here
 		if RegisterLoadingAndUnloading 
 ; 			;debug.trace(self + "OnLoad() calling AliasLoadingOrUnloading(IsLoading = True)")
-			(GetOwningQuest() as WEScript).AliasLoadingOrUnloading(IsLoading = True)
+			WEScript weQuest = (GetOwningQuest() as WEScript)
+			if weQuest != None
+				weQuest.AliasLoadingOrUnloading(IsLoading = True)
+			endif
 		EndIf
 		
 	Endif
@@ -185,7 +217,10 @@ Function TryToDetach()
 ; 				debug.trace(self + "WEAliasScript Not unregistering this reference because stage has been set: " + StopRegisteringUnloadingIfStageHasBeenSet)
 			Else		
 ; 				;debug.trace(self + "OnUnload() calling AliasLoadingOrUnloading(IsLoading = False)")
-				(GetOwningQuest() as WEScript).AliasLoadingOrUnloading(IsLoading = False)
+				WEScript weQuest = (GetOwningQuest() as WEScript)
+				if weQuest != None
+					weQuest.AliasLoadingOrUnloading(IsLoading = False)
+				endif
 			EndIf
 		EndIf
 		
@@ -194,7 +229,10 @@ Function TryToDetach()
 		Attached = true
 		
 		;*** tell quest to clean up if everyone else is gone ?but do NOT decrement, because we never incremented
-		(GetOwningQuest() as WEScript).RegisterForStopQuest()
+		WEScript weQuest = (GetOwningQuest() as WEScript)
+		if weQuest != None
+			weQuest.RegisterForStopQuest()
+		endif
 		
 	Endif
 

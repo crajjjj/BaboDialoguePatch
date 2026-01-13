@@ -7,6 +7,8 @@ Quest Property sla_Framework Auto
 
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
-	int slaexposure = (sla_Framework as slaFrameworkScr).GetActorExposure(akTarget)
-	(sla_Framework as slaFrameworkScr).SetActorExposure(akTarget, slaexposure + ControlValue)
+	if akTarget
+		int slaexposure = (sla_Framework as slaFrameworkScr).GetActorExposure(akTarget)
+		(sla_Framework as slaFrameworkScr).SetActorExposure(akTarget, slaexposure + ControlValue)
+	endif
 EndEvent

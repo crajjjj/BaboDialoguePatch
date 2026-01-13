@@ -30,15 +30,14 @@ Int iIndex = ReferenceArray.Length
 		iIndex -= 1 ; 29'th element is 30'th Draugr
 		Referencealias kalias = ReferenceArray[iIndex]
 		Actor kActor = (kalias.getref() as actor)
-		If kActor.isdead()
-		Else
-			Return false
-		EndIf
+		if kActor != None && !kActor.isdead()
+			return true
+		endif
 	EndWhile
 	Else
 		Return false
 	EndIf
-	Return True
+	return false
 EndFunction
 
 Function ReArmTrigger()
@@ -49,12 +48,17 @@ auto state waiting
 
 EVENT onTriggerEnter(objectReference actronaut)
 	if (triggerActor == None || actronaut as actor == triggerActor)
-		if (RequiredQuest.GetStage() >= (RequestedStage)) && (RequiredQuest.GetStage() < (RequestedStage02))
+		if RequiredQuest == None
+			return
+		endif
+		if (RequiredQuest.GetStage() >= RequestedStage) && (RequiredQuest.GetStage() < RequestedStage02)
 			If CountActors() || !ActorArrayToggle
 				if TeleportSwitch
 				endif
 				if SceneSwitch
-					SceneToStart.forceStart()
+					if SceneToStart != None
+						SceneToStart.forceStart()
+					endif
 				endif
 				if DoOnce
 					gotoState("done")

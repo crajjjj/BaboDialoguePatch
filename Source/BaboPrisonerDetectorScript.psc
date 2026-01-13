@@ -22,12 +22,17 @@ Int iIndex = ReferenceArray.Length
 	While iIndex
 		iIndex -= 1
 		Referencealias kalias = ReferenceArray[iIndex]
-		Actor kActor = (kalias.getref() as actor)
+		if kalias != None
+			Actor kActor = (kalias.getref() as actor)
+			if kActor != None && !kActor.isdead()
+				return true
+			endif
+		endif
 	EndWhile
 	Else
 		Return false
 	EndIf
-	Return True
+	Return false
 EndFunction
 
 Function ReArmTrigger()

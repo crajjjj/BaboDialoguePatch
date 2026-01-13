@@ -13,7 +13,11 @@ float	_percent
 Event OnWidgetReset()
 	parent.OnWidgetReset()
 	Percent 		= 0.0
-	PrimaryColor 	= MCMConfig.BaboQTEColorBar;0xFFFFFF 
+	if MCMConfig != None
+		PrimaryColor 	= MCMConfig.BaboQTEColorBar;0xFFFFFF
+	else
+		PrimaryColor 	= 0xFFFFFF
+	endif
 ;	FlashColor		= -1
 	Width 			= 350.0
 	Height 			= 30.0
@@ -22,7 +26,9 @@ Event OnWidgetReset()
 	X				= 640.0
 	Y				= 650.0
 	FillDirection 	= "Right"
-	UI.Invoke(HUD_MENU, WidgetRoot + ".initCommit")
+	if Ready
+		UI.Invoke(HUD_MENU, WidgetRoot + ".initCommit")
+	endif
 EndEvent
 
 ; @overrides SKI_WidgetBase
@@ -113,7 +119,13 @@ float Property Percent
 	EndFunction
 
 	Function set(Float a_val)
-		_percent = a_val
+		if a_val < 0.0
+			_percent = 0.0
+		elseif a_val > 1.0
+			_percent = 1.0
+		else
+			_percent = a_val
+		endif
 		If (Ready)
 			UI.InvokeFloat(HUD_MENU, WidgetRoot + ".setPercent", _percent)
 		Endif

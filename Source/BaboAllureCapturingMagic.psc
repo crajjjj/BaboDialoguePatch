@@ -14,7 +14,6 @@ Raper = akCaster
 If (Victim == Game.Getplayer())
 	If (TrapStage == 0)
 		TrapStage = 1
-		debug.messagebox ("TrapStage becomes 1")
 	elseif (TrapStage == 1)
 		Game.ForceThirdPerson()
 		Game.DisablePlayerControls(abmenu =true)

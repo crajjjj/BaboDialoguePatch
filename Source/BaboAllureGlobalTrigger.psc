@@ -42,6 +42,9 @@ Function AllureHighChance(actor akactor)
 EndFunction
 
 Bool Function ChanceRoll(actor akactor, int chance)
+	if akactor == None
+		return false
+	endif
 int RandomChance = Utility.randomint(0, 100)
 
 if RandomChance < chance
@@ -54,6 +57,9 @@ endif
 EndFunction
 
 Function EnthralledMerchant(actor akactor)
+	if akactor == None
+		return
+	endif
 	Alias_EnthralledMan.ForceRefTo(akactor)
 	akactor.EvaluatePackage()
 EndFunction

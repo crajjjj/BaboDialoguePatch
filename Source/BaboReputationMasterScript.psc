@@ -68,21 +68,108 @@ Faction Property SLAX_NudismAddictFaction Auto
 
 Bool Function RegisterFactionPopulatedSkyrim()
 	If Game.GetModByName("Populated Skyrim Legendary.esp") != 255
-		RankAdventurer		= Game.GetFormFromFile(0x000246D9, "Populated Skyrim Legendary.esp") as Faction
-		RankBadPrisioner		= Game.GetFormFromFile(0x0002E8E4, "Populated Skyrim Legendary.esp") as Faction
-		RankBeggar		= Game.GetFormFromFile(0x000246D6, "Populated Skyrim Legendary.esp") as Faction
-		RankBodyGuard		= Game.GetFormFromFile(0x000297DD, "Populated Skyrim Legendary.esp") as Faction
-		RankBountyHunter		= Game.GetFormFromFile(0x000297DE, "Populated Skyrim Legendary.esp") as Faction
-		RankHunter		= Game.GetFormFromFile(0x000246DA, "Populated Skyrim Legendary.esp") as Faction
-		RankKnight		= Game.GetFormFromFile(0x000297E1, "Populated Skyrim Legendary.esp") as Faction
-		RankLowCitizen		= Game.GetFormFromFile(0x000246D5, "Populated Skyrim Legendary.esp") as Faction
-		RankMercenary		= Game.GetFormFromFile(0x000297DF, "Populated Skyrim Legendary.esp") as Faction
-		RankMerchant		= Game.GetFormFromFile(0x000297E0, "Populated Skyrim Legendary.esp") as Faction
-		RankMiddleCitizen		= Game.GetFormFromFile(0x000246D7, "Populated Skyrim Legendary.esp") as Faction
-		RankNoble		= Game.GetFormFromFile(0x000246D8, "Populated Skyrim Legendary.esp") as Faction
-		RankRefugee		= Game.GetFormFromFile(0x000125E9, "Populated Skyrim Legendary.esp") as Faction
-		RankPilgrim		= Game.GetFormFromFile(0x000246DB, "Populated Skyrim Legendary.esp") as Faction
-		Return True
+		bool allValid = true
+		Faction factionRef
+
+		factionRef = Game.GetFormFromFile(0x000246D9, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankAdventurer = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x0002E8E4, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankBadPrisioner = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000246D6, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankBeggar = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000297DD, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankBodyGuard = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000297DE, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankBountyHunter = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000246DA, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankHunter = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000297E1, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankKnight = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000246D5, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankLowCitizen = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000297DF, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankMercenary = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000297E0, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankMerchant = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000246D7, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankMiddleCitizen = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000246D8, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankNoble = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000125E9, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankRefugee = factionRef
+		else
+			allValid = false
+		endif
+
+		factionRef = Game.GetFormFromFile(0x000246DB, "Populated Skyrim Legendary.esp") as Faction
+		if factionRef != None
+			RankPilgrim = factionRef
+		else
+			allValid = false
+		endif
+
+		Return allValid
 	Else
 		Return False
 	EndIf
@@ -102,24 +189,36 @@ Event PutSexGangBangCountEvent()
 EndEvent
 
 Event CorruptionGainEvent()
-	BDMScript.CalcCorruptionExpGain(1.0)
+	if BDMScript != None
+		BDMScript.CalcCorruptionExpGain(1.0)
+	endif
 EndEvent
 
 Event CorruptionLossEvent()
-	BDMScript.CalcCorruptionExpLoss(1.0)
+	if BDMScript != None
+		BDMScript.CalcCorruptionExpLoss(1.0)
+	endif
 EndEvent
 
 Event RStatChangeEvent(float fstat, float ffavor)
-	BaboReputation.setvalue(BaboReputation.getvalue() + fstat)
-	BaboSpendableFavor.setvalue(BaboSpendableFavor.getvalue() + ffavor)
+	if BaboReputation != None
+		BaboReputation.setvalue(BaboReputation.getvalue() + fstat)
+	endif
+	if BaboSpendableFavor != None
+		BaboSpendableFavor.setvalue(BaboSpendableFavor.getvalue() + ffavor)
+	endif
 EndEvent
 
 Event RRieklingStatChangeEvent(float fstat, float ffavor)
-	BaboReputationRieklingThirsk.setvalue(BaboReputationRieklingThirsk.getvalue() + fstat)
+	if BaboReputationRieklingThirsk != None
+		BaboReputationRieklingThirsk.setvalue(BaboReputationRieklingThirsk.getvalue() + fstat)
+	endif
 EndEvent
 
 Function RBStatChangeEvent(Float fstat)
-	BaboReputationBitch.setvalue(BaboReputationBitch.getvalue() + fstat)
+	if BaboReputationBitch != None
+		BaboReputationBitch.setvalue(BaboReputationBitch.getvalue() + fstat)
+	endif
 EndFunction
 
 ;\\\\\\\\\\\\\\\\
@@ -141,31 +240,46 @@ Function RegisterEvent()
 EndFunction
 
 Function CreatureSexReputation(Int BaboRepuetationNum)
-	BaboReputationCreatureSex.setvalue((BaboReputationCreatureSex.getvalue() as Int) + BaboRepuetationNum);WIP Maybe later I make a diary to give Player traits.
+	if BaboReputationCreatureSex != None
+		BaboReputationCreatureSex.setvalue((BaboReputationCreatureSex.getvalue() as Int) + BaboRepuetationNum);WIP Maybe later I make a diary to give Player traits.
+	endif
 EndFunction
 
 Function DecreaseReputation(Int BaboRepuetationNum, Int BaboFavorNum)
-	BaboReputation.setvalue((BaboReputation.getvalue() as Int) - BaboRepuetationNum)
-	If BaboSpendableFavor.getvalue() > 0
-		BaboSpendableFavor.setvalue((BaboSpendableFavor.getvalue() as Int) - BaboFavorNum)
-	Else
-		BaboSpendableFavor.setvalue(0)
-	EndIf
+	if BaboReputation != None
+		BaboReputation.setvalue((BaboReputation.getvalue() as Int) - BaboRepuetationNum)
+	endif
+	if BaboSpendableFavor != None
+		float newFavor = BaboSpendableFavor.getvalue() - BaboFavorNum
+		if newFavor < 0
+			newFavor = 0
+		endif
+		BaboSpendableFavor.setvalue(newFavor)
+	endif
 EndFunction
 
 Function ModifyReputationRatio(float ratio)
+	if BaboReputation == None
+		return
+	endif
 	float f = BaboReputation.getvalue()
 	f = f * ratio
 	BaboReputation.setvalue(f)
 EndFunction
 
 Function ModifyReputationBitchRatio(float ratio)
+	if BaboReputationBitch == None
+		return
+	endif
 	float f = BaboReputationBitch.getvalue()
 	f = f * ratio
 	BaboReputationBitch.setvalue(f)
 EndFunction
 
 Function DecreaseReputationBitch(Float BaboRepuetationNum)
+	if BaboReputationBitch == None
+		return
+	endif
 	BaboReputationBitch.setvalue((BaboReputationBitch.getvalue()) - BaboRepuetationNum)
 	if BaboReputationBitch.getvalue() < 0
 		BaboReputationBitch.setvalue(0)
@@ -173,54 +287,82 @@ Function DecreaseReputationBitch(Float BaboRepuetationNum)
 EndFunction
 
 Function IncreaseReputationRieklingThirsk(Int BaboRepuetationNum)
-	BaboReputationRieklingThirsk.setvalue(BaboReputationRieklingThirsk.getvalue() + BaboRepuetationNum as float)
+	if BaboReputationRieklingThirsk != None
+		BaboReputationRieklingThirsk.setvalue(BaboReputationRieklingThirsk.getvalue() + BaboRepuetationNum as float)
+	endif
 EndFunction
 
 Function IncreaseReputation(Int BaboRepuetationNum, Int BaboFavorNum)
-	BaboReputation.setvalue(BaboReputation.getvalue() + BaboRepuetationNum as float)
-	BaboSpendableFavor.setvalue(BaboSpendableFavor.getvalue() + BaboFavorNum as float)
+	if BaboReputation != None
+		BaboReputation.setvalue(BaboReputation.getvalue() + BaboRepuetationNum as float)
+	endif
+	if BaboSpendableFavor != None
+		BaboSpendableFavor.setvalue(BaboSpendableFavor.getvalue() + BaboFavorNum as float)
+	endif
 EndFunction
 
 Function IncreaseReputationBitch(Float BaboRepuetationNum)
-	BaboReputationBitch.setvalue((BaboReputationBitch.getvalue()) + BaboRepuetationNum)
+	if BaboReputationBitch != None
+		BaboReputationBitch.setvalue((BaboReputationBitch.getvalue()) + BaboRepuetationNum)
+	endif
 EndFunction
 
 Function IncreaseReputationBitchbyExposure(Float BaboRepuetationNum)
-	BaboPlayerFondofSexyArmorCycleValue.setvalue(BaboPlayerFondofSexyArmorCycleValue.getvalue() + BaboRepuetationNum)
-	
-	if BaboReputationBitch.getvalue() < 100.0
-		BaboReputationBitch.setvalue((BaboReputationBitch.getvalue()) + BaboRepuetationNum)
+	if BaboPlayerFondofSexyArmorCycleValue != None
+		BaboPlayerFondofSexyArmorCycleValue.setvalue(BaboPlayerFondofSexyArmorCycleValue.getvalue() + BaboRepuetationNum)
 	endif
 	
-	if BaboPlayerFondofSexyArmorCycleValue.getvalue() >= 100.0
-		if PlayerRef.isinfaction(SLAX_NudismAddictFaction)
-			PlayerRef.setfactionrank(SLAX_NudismAddictFaction, PlayerRef.getfactionrank(SLAX_NudismAddictFaction) + 1)
-		else
-			PlayerRef.addtofaction(SLAX_NudismAddictFaction)
+	if BaboReputationBitch != None
+		if BaboReputationBitch.getvalue() < 100.0
+			BaboReputationBitch.setvalue((BaboReputationBitch.getvalue()) + BaboRepuetationNum)
 		endif
-		BaboPlayerFondofSexyArmorCycleValue.setvalue(0)
+	endif
+	
+	if BaboPlayerFondofSexyArmorCycleValue != None && PlayerRef != None && SLAX_NudismAddictFaction != None
+		if BaboPlayerFondofSexyArmorCycleValue.getvalue() >= 100.0
+			if PlayerRef.isinfaction(SLAX_NudismAddictFaction)
+				PlayerRef.setfactionrank(SLAX_NudismAddictFaction, PlayerRef.getfactionrank(SLAX_NudismAddictFaction) + 1)
+			else
+				PlayerRef.addtofaction(SLAX_NudismAddictFaction)
+			endif
+			BaboPlayerFondofSexyArmorCycleValue.setvalue(0)
+		endif
 	endif
 EndFunction
 
 Function SpendFavor(Int BaboFavorNum)
-	If BaboSpendableFavor.getvalue() > 0
-		BaboSpendableFavor.setvalue(BaboSpendableFavor.getvalue() - BaboFavorNum as float)
-	Else
-		BaboSpendableFavor.setvalue(0)
-	EndIf
+	if BaboSpendableFavor == None
+		return
+	endif
+	float newFavor = BaboSpendableFavor.getvalue() - BaboFavorNum as float
+	if newFavor < 0
+		newFavor = 0
+	endif
+	BaboSpendableFavor.setvalue(newFavor)
 EndFunction
 
 Function SexCount(Int Count)
-	SexCount.setvalue(SexCount.getvalue() + Count)
-	BDMScript.CalcTraumaExpGain(Count)
+	if SexCount != None
+		SexCount.setvalue(SexCount.getvalue() + Count)
+	endif
+	if BDMScript != None
+		BDMScript.CalcTraumaExpGain(Count)
+	endif
 EndFunction
 
 Function SexCountgangbang(Int Count)
-	SexCountGangBang.setvalue(SexCountGangBang.getvalue() + Count)
-	BDMScript.CalcTraumaExpGain(Count)
+	if SexCountGangBang != None
+		SexCountGangBang.setvalue(SexCountGangBang.getvalue() + Count)
+	endif
+	if BDMScript != None
+		BDMScript.CalcTraumaExpGain(Count)
+	endif
 EndFunction
 
 Function AddingTitletoPlayerRef(faction FTitle)
+	if PlayerRef == None || FTitle == None
+		return
+	endif
 	if PlayerRef.isinfaction(FTitle)
 		PlayerRef.setfactionrank(FTitle, PlayerRef.getfactionrank(FTitle) + 1)
 	else
@@ -229,10 +371,16 @@ Function AddingTitletoPlayerRef(faction FTitle)
 EndFunction
 
 Function RemovingTitletoPlayerRef(faction FTitle)
+	if PlayerRef == None || FTitle == None
+		return
+	endif
 	PlayerRef.Removefromfaction(FTitle)
 EndFunction
 
 Function SetTitleGlobal(Globalvariable FGlobal, Int Num)
+	if FGlobal == None
+		return
+	endif
 	FGlobal.setvalue(FGlobal.getvalue() + Num)
 Endfunction
 
@@ -267,23 +415,42 @@ Event BaboDialogueSLAPPConsequenceEvent(Actor Rapist, Bool RapeTry, string resul
 EndEvent
 
 Function ExternalTriggerSLAPP(Actor Rapist, Bool RapeTry)
+	if Rapist == None
+		return
+	endif
+	Actor viceActor = None
+	if ViceCaptainRef != None
+		viceActor = ViceCaptainRef.getactorref()
+	endif
+	int whiterunStage = 0
+	if BaboDialogueWhiterun != None
+		whiterunStage = BaboDialogueWhiterun.getstage()
+	endif
 if RapeTry == false
-	if (ViceCaptainRef.getactorref() == Rapist) && (BaboDialogueWhiterun.getstage() >= 30) && (BaboDialogueWhiterun.getstage() < 60)
+	if (viceActor == Rapist) && (whiterunStage >= 30) && (whiterunStage < 60)
 		Rapist.Setactorvalue("Variable06", Utility.randomint(4, 6))
-		(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS04()
-	elseif (ViceCaptainRef.getactorref() == Rapist) && (BaboDialogueWhiterun.getstage() >= 60) && (BaboDialogueWhiterun.getstage() < 65)
+		if BaboDialogueWhiterun != None
+			(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS04()
+		endif
+	elseif (viceActor == Rapist) && (whiterunStage >= 60) && (whiterunStage < 65)
 		Rapist.Setactorvalue("Variable06", 6)
-		(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS04(); For now below 60 and above 60 are the same.
+		if BaboDialogueWhiterun != None
+			(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS04(); For now below 60 and above 60 are the same.
+		endif
 	EndIf
 endif
 
 if RapeTry == true
-	if (ViceCaptainRef.getactorref() == Rapist) && (BaboDialogueWhiterun.getstage() >= 30) && (BaboDialogueWhiterun.getstage() < 60)
+	if (viceActor == Rapist) && (whiterunStage >= 30) && (whiterunStage < 60)
 		Rapist.Setactorvalue("Variable06", 6)
-		(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01();
-	elseif (ViceCaptainRef.getactorref() == Rapist) && (BaboDialogueWhiterun.getstage() >= 60) && (BaboDialogueWhiterun.getstage() < 65)
+		if BaboDialogueWhiterun != None
+			(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01();
+		endif
+	elseif (viceActor == Rapist) && (whiterunStage >= 60) && (whiterunStage < 65)
 		Rapist.Setactorvalue("Variable06", 3)
-		(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01()
+		if BaboDialogueWhiterun != None
+			(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01()
+		endif
 	EndIf
 CorruptionGainEvent()
 SexCount(1)
@@ -300,91 +467,110 @@ EndFunction
 
 
 Event BaboDialogueConsequenceEvent(Form Rapist, Bool Worse, string results)
-	BaboMonitorScriptCreaturePackageActive.setvalue(0)
+	if BaboMonitorScriptCreaturePackageActive != None
+		BaboMonitorScriptCreaturePackageActive.setvalue(0)
+	endif
 	Debug.trace(results)
 	Actor RapistActor = Rapist as actor
 	ExternalTrigger(RapistActor, worse)
 EndEvent
 
 Function ExternalTrigger(Actor Raper, Bool Raped)
+	if Raper == None
+		return
+	endif
+	Actor viceActor = None
+	if ViceCaptainRef != None
+		viceActor = ViceCaptainRef.getactorref()
+	endif
+	int whiterunStage = 0
+	if BaboDialogueWhiterun != None
+		whiterunStage = BaboDialogueWhiterun.getstage()
+	endif
 if Raped == false
 
 endif
 
 if Raped == true
-	if (ViceCaptainRef.getactorref() == Raper) && (BaboDialogueWhiterun.getstage() >= 30) && (BaboDialogueWhiterun.getstage() < 60)
+	if (viceActor == Raper) && (whiterunStage >= 30) && (whiterunStage < 60)
 		Raper.Setactorvalue("Variable06", 6)
-		(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01()
-	elseif (Raper.isinfaction(BaboChangeLocationEvent06Faction))
-		if BaboChangeLocationEvent06.getstage() == 10
+		if BaboDialogueWhiterun != None
+			(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01()
+		endif
+	elseif (BaboChangeLocationEvent06Faction != None && Raper.isinfaction(BaboChangeLocationEvent06Faction))
+		if BaboChangeLocationEvent06 != None && BaboChangeLocationEvent06.getstage() == 10
 			BaboChangeLocationEvent06.setstage(11)
-		elseif BaboChangeLocationEvent06.getstage() == 20
+		elseif BaboChangeLocationEvent06 != None && BaboChangeLocationEvent06.getstage() == 20
 			BaboChangeLocationEvent06.setstage(21)
 		endif
-	elseif (Raper.isinfaction(BaboEncounter01Faction))
-		if BaboEncounter01.getstage() == 30
+	elseif (BaboEncounter01Faction != None && Raper.isinfaction(BaboEncounter01Faction))
+		if BaboEncounter01 != None && BaboEncounter01.getstage() == 30
 			BaboEncounter01.setstage(37)
 		endif
-	elseif (Raper.isinfaction(BaboEncounter02Faction))
-		if BaboEncounter02.getstage() == 7
+	elseif (BaboEncounter02Faction != None && Raper.isinfaction(BaboEncounter02Faction))
+		if BaboEncounter02 != None && BaboEncounter02.getstage() == 7
 			BaboEncounter02.setstage(9)
 		endif
-	elseif (ViceCaptainRef.getactorref() == Raper) && (BaboDialogueWhiterun.getstage() >= 60) && (BaboDialogueWhiterun.getstage() < 65)
+	elseif (viceActor == Raper) && (whiterunStage >= 60) && (whiterunStage < 65)
 		Raper.Setactorvalue("Variable06", 3)
-		(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01()
-	elseif Raper.isinfaction(BaboCurrentHireling) || Raper.isinfaction(BaboCurrentAnimalHireling)
-		(BaboDialogueHirelings as BaboDialogueHirelingsQuest).AfterRapeSceneStart()
+		if BaboDialogueWhiterun != None
+			(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS01()
+		endif
+	elseif (BaboCurrentHireling != None && Raper.isinfaction(BaboCurrentHireling)) || (BaboCurrentAnimalHireling != None && Raper.isinfaction(BaboCurrentAnimalHireling))
+		if BaboDialogueHirelings != None
+			(BaboDialogueHirelings as BaboDialogueHirelingsQuest).AfterRapeSceneStart()
+		endif
 	EndIf
 
-	if (Raper.isinfaction(BaboChangeLocationEvent08Faction))
-		if BaboChangeLocationEvent08.getstage() == 25
+	if (BaboChangeLocationEvent08Faction != None && Raper.isinfaction(BaboChangeLocationEvent08Faction))
+		if BaboChangeLocationEvent08 != None && BaboChangeLocationEvent08.getstage() == 25
 			BaboChangeLocationEvent08.setstage(28)
-		elseif BaboChangeLocationEvent08.getstage() == 45
+		elseif BaboChangeLocationEvent08 != None && BaboChangeLocationEvent08.getstage() == 45
 			BaboChangeLocationEvent08.setstage(47)
 		endif
 	endif
 
-	if BaboChangeLocationEvent02.getstage() == 20
+	if BaboChangeLocationEvent02 != None && BaboChangeLocationEvent02.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02.setstage(30)
 	endif
 
-	if BaboChangeLocationEvent02Forest.getstage() == 20
+	if BaboChangeLocationEvent02Forest != None && BaboChangeLocationEvent02Forest.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02Forest.setstage(30)
 	endif
 
-	if BaboChangeLocationEvent02ForestSnow.getstage() == 20
+	if BaboChangeLocationEvent02ForestSnow != None && BaboChangeLocationEvent02ForestSnow.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02ForestSnow.setstage(30)
 	endif
 
-	if BaboChangeLocationEvent02Coast.getstage() == 20
+	if BaboChangeLocationEvent02Coast != None && BaboChangeLocationEvent02Coast.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02Coast.setstage(30)
 	endif
 
-	if BaboChangeLocationEvent02Marsh.getstage() == 20
+	if BaboChangeLocationEvent02Marsh != None && BaboChangeLocationEvent02Marsh.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02Marsh.setstage(30)
 	endif
 	
-	if BaboChangeLocationEvent02Mountain.getstage() == 20
+	if BaboChangeLocationEvent02Mountain != None && BaboChangeLocationEvent02Mountain.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02Mountain.setstage(30)
 	endif
 	
-	if BaboChangeLocationEvent02MountainSnow.getstage() == 20
+	if BaboChangeLocationEvent02MountainSnow != None && BaboChangeLocationEvent02MountainSnow.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02MountainSnow.setstage(30)
 	endif
 	
-	if BaboChangeLocationEvent02Plain.getstage() == 20
+	if BaboChangeLocationEvent02Plain != None && BaboChangeLocationEvent02Plain.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02Plain.setstage(30)
 	endif
 	
-	if BaboChangeLocationEvent02PlainSnow.getstage() == 20
+	if BaboChangeLocationEvent02PlainSnow != None && BaboChangeLocationEvent02PlainSnow.getstage() == 20
 		Utility.wait(3.0)
 		BaboChangeLocationEvent02PlainSnow.setstage(30)
 	endif
@@ -393,74 +579,78 @@ SexCount(1)
 
 else
 
-	if (BaboChangeLocationEvent05.getstage() == 20) && (BaboChangeLocationEvent05Visitor.getactorref() == Raper)
+	if (BaboChangeLocationEvent05 != None && BaboChangeLocationEvent05.getstage() == 20) && (BaboChangeLocationEvent05Visitor != None && BaboChangeLocationEvent05Visitor.getactorref() == Raper)
 		BaboChangeLocationEvent05.setstage(30);BaboDiaQuest script handles the escapefail situation. Don't have to add elseif.
 
-	elseif (ViceCaptainRef.getactorref() == Raper) && (BaboDialogueWhiterun.getstage() >= 30) && (BaboDialogueWhiterun.getstage() < 60)
+	elseif (viceActor == Raper) && (whiterunStage >= 30) && (whiterunStage < 60)
 		Raper.Setactorvalue("Variable06", 4)
-		(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS03()
-	elseif Raper.isinfaction(BaboCurrentHireling) || Raper.isinfaction(BaboCurrentAnimalHireling)
-		(BaboDialogueHirelings as BaboDialogueHirelingsQuest).DismissFollower(3)
+		if BaboDialogueWhiterun != None
+			(BaboDialogueWhiterun as BaboDialogueWhiterunScript).WVAS03()
+		endif
+	elseif (BaboCurrentHireling != None && Raper.isinfaction(BaboCurrentHireling)) || (BaboCurrentAnimalHireling != None && Raper.isinfaction(BaboCurrentAnimalHireling))
+		if BaboDialogueHirelings != None
+			(BaboDialogueHirelings as BaboDialogueHirelingsQuest).DismissFollower(3)
+		endif
 	EndIf
 
-	if (Raper.isinfaction(BaboEncounter01Faction))
-		if BaboEncounter01.getstage() == 30
+	if (BaboEncounter01Faction != None && Raper.isinfaction(BaboEncounter01Faction))
+		if BaboEncounter01 != None && BaboEncounter01.getstage() == 30
 			BaboEncounter01.setstage(35)
 		endif
 	endif
-	if (Raper.isinfaction(BaboEncounter02Faction))
-		if BaboEncounter02.getstage() == 7
+	if (BaboEncounter02Faction != None && Raper.isinfaction(BaboEncounter02Faction))
+		if BaboEncounter02 != None && BaboEncounter02.getstage() == 7
 			BaboEncounter02.setstage(8)
 		endif
 	endif
 	
-	if (Raper.isinfaction(BaboChangeLocationEvent08Faction))
-		if BaboChangeLocationEvent08.getstage() == 25
+	if (BaboChangeLocationEvent08Faction != None && Raper.isinfaction(BaboChangeLocationEvent08Faction))
+		if BaboChangeLocationEvent08 != None && BaboChangeLocationEvent08.getstage() == 25
 			BaboChangeLocationEvent08.setstage(27)
-		elseif BaboChangeLocationEvent08.getstage() == 45
+		elseif BaboChangeLocationEvent08 != None && BaboChangeLocationEvent08.getstage() == 45
 			BaboChangeLocationEvent08.setstage(46)
 		endif
 	endif
 	
-	if BaboChangeLocationEvent02.getstage() == 20
+	if BaboChangeLocationEvent02 != None && BaboChangeLocationEvent02.getstage() == 20
 		BaboChangeLocationEvent02.setstage(70)
 	endif
 
-	if BaboChangeLocationEvent02Forest.getstage() == 20
+	if BaboChangeLocationEvent02Forest != None && BaboChangeLocationEvent02Forest.getstage() == 20
 		BaboChangeLocationEvent02Forest.setstage(70)
 	endif
 
-	if BaboChangeLocationEvent02ForestSnow.getstage() == 20
+	if BaboChangeLocationEvent02ForestSnow != None && BaboChangeLocationEvent02ForestSnow.getstage() == 20
 		BaboChangeLocationEvent02ForestSnow.setstage(70)
 	endif
 	
-	if BaboChangeLocationEvent02Coast.getstage() == 20
+	if BaboChangeLocationEvent02Coast != None && BaboChangeLocationEvent02Coast.getstage() == 20
 		BaboChangeLocationEvent02Coast.setstage(70)
 	endif
 	
-	if BaboChangeLocationEvent02Marsh.getstage() == 20
+	if BaboChangeLocationEvent02Marsh != None && BaboChangeLocationEvent02Marsh.getstage() == 20
 		BaboChangeLocationEvent02Marsh.setstage(70)
 	endif
 	
-	if BaboChangeLocationEvent02Mountain.getstage() == 20
+	if BaboChangeLocationEvent02Mountain != None && BaboChangeLocationEvent02Mountain.getstage() == 20
 		BaboChangeLocationEvent02Mountain.setstage(70)
 	endif
 	
-	if BaboChangeLocationEvent02MountainSnow.getstage() == 20
+	if BaboChangeLocationEvent02MountainSnow != None && BaboChangeLocationEvent02MountainSnow.getstage() == 20
 		BaboChangeLocationEvent02MountainSnow.setstage(70)
 	endif
 	
-	if BaboChangeLocationEvent02Plain.getstage() == 20
+	if BaboChangeLocationEvent02Plain != None && BaboChangeLocationEvent02Plain.getstage() == 20
 		BaboChangeLocationEvent02Plain.setstage(70)
 	endif
 	
-	if BaboChangeLocationEvent02PlainSnow.getstage() == 20
+	if BaboChangeLocationEvent02PlainSnow != None && BaboChangeLocationEvent02PlainSnow.getstage() == 20
 		BaboChangeLocationEvent02PlainSnow.setstage(70)
 	endif
 
 endif
 
-if raper.isinfaction(BaboCreatureArousedFaction)
+if BaboCreatureArousedFaction != None && BaboCreatureMatePartnerFaction != None && raper.isinfaction(BaboCreatureArousedFaction)
 	raper.removefromfaction(BaboCreatureArousedFaction)
 	raper.addtofaction(BaboCreatureMatePartnerFaction)
 endif

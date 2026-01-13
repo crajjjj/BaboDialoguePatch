@@ -8,7 +8,7 @@ ActorBase property myNPC auto
 ObjectReference property SpawnPlace auto
 
 EVENT onTriggerEnter(objectReference ref)
-	IF ( ref as ACTOR == game.getPlayer() )
+	IF (ref && ref as ACTOR == game.getPlayer() )
 		SpawnPlace.PlaceActorAtMe(myNPC, 4)
 	ENDIF
 

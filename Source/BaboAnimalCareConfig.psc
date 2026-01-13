@@ -14,6 +14,9 @@ String Property AnimalCareStartHour = "babo.animalcare.starthour" autoreadonly h
 String Property AnimalCareEndHour = "babo.animalcare.endhour" autoreadonly hidden
 
 Bool Function TakePet(actor akactor, int fday)
+	if akactor == None
+		return false
+	endif
 	if AllotSlot(akactor)
 		SetHouse()
 		akactor.setfactionrank(BaboPlayerAnimalStayFaction, 0)
@@ -32,10 +35,14 @@ Bool Function TakePet(actor akactor, int fday)
 EndFunction
 
 bool Function DismissPet(actor akactor)
+	if akactor == None
+		return false
+	endif
 int iindex = Creatures.length;Total 15
 int i = 0
 	While i < iindex
-		if Creatures[i].getreference() as actor == akactor
+		Actor creatureRef = Creatures[i].getreference() as actor
+		if creatureRef == akactor
 			Creatures[i].clear()
 			akactor.removefromfaction(BaboPlayerAnimalStayFaction)
 			akactor.removefromfaction(BaboPlayerAnimalStayPlaceFaction)
@@ -47,6 +54,9 @@ int i = 0
 EndFunction
 
 bool Function AllotSlot(actor akactor)
+	if akactor == None
+		return false
+	endif
 int iindex = Creatures.length;Total 15
 int i = 0
 	While i < iindex
@@ -60,6 +70,9 @@ int i = 0
 EndFunction
 
 bool Function CheckTempAnimal(actor akactor)
+	if akactor == None
+		return false
+	endif
 	if akactor.getfactionrank(BaboAnimalOwnedFaction) == 1
 		float fstart = GameHour.getvalue() - (StorageUtil.FloatListGet(akactor, AnimalCareStartHour, 0))
 		if fstart > (StorageUtil.FloatListGet(akactor, AnimalCareEndHour, 0))

@@ -86,6 +86,9 @@ EndFunction
 ;/ EndFunction /;
 
 Function RegisterPO3HitEvent(form akaggressor)
+	if PlayerAlias == None || PlayerRef == None
+		return
+	endif
 	if !PlayerAlias.getreference()
 		PlayerAlias.forcerefto(PlayerRef)
 	endif
@@ -93,6 +96,9 @@ Function RegisterPO3HitEvent(form akaggressor)
 EndFunction
 
 Function UnRegisterPO3HitEvent(form akaggressor)
+	if PlayerAlias == None
+		return
+	endif
 	PO3_Events_Alias.UnregisterForHitEventEx(PlayerAlias, akaggressor, None, None, -1, -1, -1, -1, true)
 	PlayerAlias.clear()
 EndFunction
@@ -301,12 +307,14 @@ int thisSlot = 0x01
 	if (Math.LogicalAnd(slotsChecked, thisSlot) != thisSlot) ;only check slots we haven't found anything equipped on already
 	Armor thisArmor = target.GetWornForm(thisSlot) as Armor
 	if (thisArmor)
-		if (thisArmor.HasKeyword(TargetArmor)) ;check for PantyKeyword
+		if TargetArmor != None && (thisArmor.HasKeyword(TargetArmor)) ;check for PantyKeyword
             Target.UnequipItem(thisArmor)
 			If StealSwitch
-				Target.RemoveItem(thisArmor, 1, false, Receiver)
+				if Receiver != None
+					Target.RemoveItem(thisArmor, 1, false, Receiver)
+				endif
 			EndIf
-			If Animated
+			If Animated && Receiver != None
 				Receiver.Say(CombatTopicPanty)
 				SendAnimationEvent(target, "CoverPrivates")
 				(BaboSexController as BaboSexControllerManager).StealArmorMessagebox(2)
@@ -338,12 +346,14 @@ int thisSlot = 0x01
 		if thisArmor.HasKeyword(SLA_PantiesNormal) || thisArmor.HasKeyword(SLA_MicroHotpants) || thisArmor.HasKeyword(SLA_ThongLowleg) || thisArmor.HasKeyword(SLA_ThongT) || thisArmor.HasKeyword(SLA_ThongGstring) || thisArmor.HasKeyword(SLA_ThongCString) || thisArmor.HasKeyword(SLA_PastiesCrotch)
             Target.UnequipItem(thisArmor)
 			If StealSwitch
-				Target.RemoveItem(thisArmor, 1, false, Receiver)
+				if Receiver != None
+					Target.RemoveItem(thisArmor, 1, false, Receiver)
+				endif
 			EndIf
-			If FakeSwitch
+			If FakeSwitch && TempChest != None
 				Target.RemoveItem(thisArmor, 1, false, TempChest)
 			Endif
-			If Animated
+			If Animated && Receiver != None
 			Receiver.Say(CombatTopicPanty)
 			SendAnimationEvent(target, "CoverPrivates")
 			(BaboSexController as BaboSexControllerManager).StealArmorMessagebox(2)
@@ -374,12 +384,14 @@ int thisSlot = 0x01
 		if thisArmor.HasKeyword(SLA_PelvicCurtain) || thisArmor.HasKeyword(SLA_MicroSkirt) || thisArmor.HasKeyword(SLA_MiniSkirt) || thisArmor.HasKeyword(SLA_ShowgirlSkirt) || thisArmor.HasKeyword(SLA_FullSkirt) || thisArmor.HasKeyword(SLA_PantsNormal)
             Target.UnequipItem(thisArmor)
 			If StealSwitch
-				Target.RemoveItem(thisArmor, 1, false, Receiver)
+				if Receiver != None
+					Target.RemoveItem(thisArmor, 1, false, Receiver)
+				endif
 			EndIf
-			If FakeSwitch
+			If FakeSwitch && TempChest != None
 				Target.RemoveItem(thisArmor, 1, false, TempChest)
 			Endif
-			If Animated
+			If Animated && Receiver != None
 			Receiver.Say(CombatTopicPanty)
 			(BaboSexController as BaboSexControllerManager).StealArmorMessagebox(3)
 			EndIf
@@ -422,10 +434,12 @@ int thisSlot = 0x01
 	Armor thisArmor = target.GetWornForm(thisSlot) as Armor
 	StripSwitch = false
 	If !Keywordswitch
-		return thisarmor
+		if thisArmor != None
+			return thisarmor
+		endif
 		StripSwitch = True
 	Else
-		if (thisArmor.HasKeyword(TargetArmor))
+		if TargetArmor != None && thisArmor != None && (thisArmor.HasKeyword(TargetArmor))
 			return thisarmor
 			StripSwitch = True
 		Else

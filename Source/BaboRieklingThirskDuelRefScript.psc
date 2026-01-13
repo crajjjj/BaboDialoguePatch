@@ -53,13 +53,16 @@ Actor LastAggressor
 Message Property BaboBrawlingDefeatedMsg Auto
 Message Property BaboBrawlingDefeatedStandUpMsg Auto
 
-Event oninit()
+Event OnInit()
 	if InitialEssential
 		CheckEssential();Temporary
 	endif
 	
 	;###############SE#################
-	PO3_Events_Alias.RegisterForHitEventEx(self, Foe01.getreference(), None, None, -1, -1, -1, -1, true)
+	ObjectReference foeRef = Foe01.getreference()
+	if foeRef != None
+		PO3_Events_Alias.RegisterForHitEventEx(self, foeRef, None, None, -1, -1, -1, -1, true)
+	endif
 	;###############SE#################
 EndEvent
 
@@ -69,12 +72,17 @@ EndEvent
 
 Function CheckEssential()
 
-MaximumCriterion = BaboCombatWoundPercentMaximum.getvalue()
-MinimumCriterion = BaboCombatWoundPercentMinimum.getvalue()
+	if BaboCombatWoundPercentMaximum == None || BaboCombatWoundPercentMinimum == None || BaboCombatEssentialSwitch == None
+		return
+	endif
+	MaximumCriterion = BaboCombatWoundPercentMaximum.getvalue()
+	MinimumCriterion = BaboCombatWoundPercentMinimum.getvalue()
 
 	If BaboCombatEssentialSwitch.getvalue() == 1
 		if EssentialAtStart
-			PlayerEssential.forcerefto((Self.getreference() as actor))
+			if PlayerEssential != None
+				PlayerEssential.forcerefto((Self.getreference() as actor))
+			endif
 		endif
 		gotostate("YesEssential")
 	else
@@ -83,20 +91,28 @@ MinimumCriterion = BaboCombatWoundPercentMinimum.getvalue()
 EndFunction
 
 Function ClearEssential()
-	PlayerEssential.clear()
+	if PlayerEssential != None
+		PlayerEssential.clear()
+	endif
 EndFunction
 
 Function RegisterOnHitExExtra(form akfilter)
-	PO3_Events_Alias.RegisterForHitEventEx(self, akfilter, None, None, -1, -1, -1, -1, true)
+	if akfilter != None
+		PO3_Events_Alias.RegisterForHitEventEx(self, akfilter, None, None, -1, -1, -1, -1, true)
+	endif
 EndFunction
 
 Function Defeated()
+	Actor playerActorRef = (Self.getreference() as actor)
+	if playerActorRef == None
+		return
+	endif
 	BaboBrawlingDefeatedMsg.show()
 	Game.ForceThirdPerson()
-	(Self.getreference() as actor).RestoreActorValue("health", 100)
+	playerActorRef.RestoreActorValue("health", 100)
 	Game.DisablePlayerControls(abmenu =true)
 	Utility.Wait(0.5)
-	(Self.getreference() as actor).PlayIdle(Knockout)
+	playerActorRef.PlayIdle(Knockout)
 
 		If NexStage01Switch == True
 			Self.GetOwningQuest().SetStage(NextStage01)
@@ -116,21 +132,33 @@ EndFunction
 Function DamageCalculation(ObjectReference akAggressor)
 
 	If GetOwningQuest().GetStage() == StartStage || GetOwningQuest().GetStage() == StartStage02
-		If akAggressor.haskeyword(BaboStripper) || Yeskeyword == False
-			If	FoeSwitch == False || (Foe01.getref() as actor).isdead() == False
+		if akAggressor == None
+			return
+		endif
+		bool isStripper = false
+		if BaboStripper != None
+			isStripper = akAggressor.haskeyword(BaboStripper)
+		endif
+		If isStripper || Yeskeyword == False
+			Actor foeActorRef = (Foe01.getref() as actor)
+			If	FoeSwitch == False || (foeActorRef != None && foeActorRef.isdead() == False)
 				Defeated()
 			Else
 				;Now you can die
 				BaboBrawlingDefeatedStandUpMsg.show()
 				Game.ForceThirdPerson()
-				(Self.getreference() as actor).RestoreActorValue("health", 10)
+				Actor playerActorRef = (Self.getreference() as actor)
+				if playerActorRef == None
+					return
+				endif
+				playerActorRef.RestoreActorValue("health", 10)
 				Game.DisablePlayerControls(abmenu =true)
 				Utility.Wait(0.5)
-				(Self.getreference() as actor).PlayIdle(Knockout02)
+				playerActorRef.PlayIdle(Knockout02)
 				Utility.Wait(5.0)
-				(Self.getreference() as actor).RestoreActorValue("health", 5)
+				playerActorRef.RestoreActorValue("health", 5)
 				Game.EnablePlayerControls(abmenu =true)
-				(Self.getreference() as actor).PlayIdle(StaggerStart)
+				playerActorRef.PlayIdle(StaggerStart)
 			EndIf
 		EndIf
 	EndIf
@@ -156,8 +184,15 @@ EndFunction
 Event OnHitEx(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
 ;###############SE#################
 
-CurrentHealth = (Self.getreference() as actor).GetActorValue("health")
-BaseHealth = (Self.getreference() as actor).GetBaseActorValue("health")
+Actor playerActorRef = (Self.getreference() as actor)
+if playerActorRef == None
+	return
+endif
+CurrentHealth = playerActorRef.GetActorValue("health")
+BaseHealth = playerActorRef.GetBaseActorValue("health")
+if BaseHealth <= 0
+	return
+endif
 playersHealth = (CurrentHealth / BaseHealth) * 100
 
 If PlayersHealth < 0
@@ -185,7 +220,9 @@ endstate
 State YesEssential
 
 Event Onbeginstate()
-	LastAggressor = Foe01.getreference() as actor
+	if Foe01 != None
+		LastAggressor = Foe01.getreference() as actor
+	endif
 EndEvent
 
 Function CheckEssential()

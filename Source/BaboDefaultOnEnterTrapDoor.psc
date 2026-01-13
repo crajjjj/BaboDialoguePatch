@@ -21,14 +21,17 @@ auto state waiting
 
 EVENT onTriggerEnter(objectReference actronaut)
 	if !(actronaut as actor == PlayerRef)
-		if (RequiredQuest.GetStage() >= (RequestedStage)) && (RequiredQuest.GetStage() < (RequestedStage02)) || AutoDoor
+		if (RequiredQuest == None || TrapDoorRef == None)
+			return
+		endif
+		if ((RequiredQuest.GetStage() >= RequestedStage) && (RequiredQuest.GetStage() < RequestedStage02)) || AutoDoor
 			if DoOnce
 				gotoState("done")
 			endif
 			if OpenDoor
-				(TrapDoorRef.getreference()).setopen(true)
+				TrapDoorRef.getreference().setopen(true)
 			else
-				(TrapDoorRef.getreference()).setopen(false)
+				TrapDoorRef.getreference().setopen(false)
 			endif
 		endif
 	else

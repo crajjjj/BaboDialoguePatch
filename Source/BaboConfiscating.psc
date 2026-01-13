@@ -16,12 +16,21 @@ Actor targ
 
 Function ConfiscateMWeapon()
 
+if PlayerRef == None || OrcContainer == None
+	return
+endif
 CurrentRWeapon = PlayerRef.GetEquippedObject(1) as Weapon
-PlayerRef.RemoveItem(CurrentRWeapon, 1, false, OrcContainer)
+if CurrentRWeapon != None
+	PlayerRef.RemoveItem(CurrentRWeapon, 1, false, OrcContainer)
+endif
 
 EndFunction
 
 Function ConfiscateMEquipment()
+
+	if PlayerRef == None || OrcContainer == None
+		return
+	endif
 
 	CurrentBody = PlayerRef.GetWornForm(0x00000004) as Armor
 	CurrentPanty = PlayerRef.GetWornForm(0x00400000) as Armor
@@ -29,14 +38,24 @@ Function ConfiscateMEquipment()
 	CurrentFeet = PlayerRef.GetWornForm(0x00000080) as Armor
 	CurrentShield = PlayerRef.GetWornForm(0x00000200) as Armor
 
-	If !CurrentPanty.HasKeyWordString("Hentaipanty")
-		CurrentPanty != PlayerRef.GetWornForm(0x00400000) as Armor
-	EndIf
+	if CurrentPanty != None && !CurrentPanty.HasKeyWordString("Hentaipanty")
+		CurrentPanty = None
+	endif
 
-	PlayerRef.RemoveItem(CurrentBody, 1, false, OrcContainer)
-	PlayerRef.RemoveItem(CurrentPanty, 1, false, OrcContainer)
-	PlayerRef.RemoveItem(CurrentHand, 1, false, OrcContainer)
-	PlayerRef.RemoveItem(CurrentFeet, 1, false, OrcContainer)
-	PlayerRef.RemoveItem(CurrentShield, 1, false, OrcContainer)
+	if CurrentBody != None
+		PlayerRef.RemoveItem(CurrentBody, 1, false, OrcContainer)
+	endif
+	if CurrentPanty != None
+		PlayerRef.RemoveItem(CurrentPanty, 1, false, OrcContainer)
+	endif
+	if CurrentHand != None
+		PlayerRef.RemoveItem(CurrentHand, 1, false, OrcContainer)
+	endif
+	if CurrentFeet != None
+		PlayerRef.RemoveItem(CurrentFeet, 1, false, OrcContainer)
+	endif
+	if CurrentShield != None
+		PlayerRef.RemoveItem(CurrentShield, 1, false, OrcContainer)
+	endif
 
 EndFunction

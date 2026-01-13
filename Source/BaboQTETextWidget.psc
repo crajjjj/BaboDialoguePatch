@@ -163,13 +163,17 @@ EndFunction
 
 Function MoveTo(float newX, float newY)
 	if newX != X || newY != Y
-		UI.InvokeBool(HUD_MENU, WidgetRoot + ".setVisible", false)
+		if Ready
+			UI.InvokeBool(HUD_MENU, WidgetRoot + ".setVisible", false)
+		endif
 		if X != newX
 			X = newX
 		endif
 		if Y != newY
 			Y = newY
 		endif
-		UpdateWidgetVisible()
+		if Ready
+			UpdateWidgetVisible()
+		endif
 	endif
 EndFunction

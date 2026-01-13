@@ -70,7 +70,10 @@ Event OnPlayerLoadGame()
 EndEvent
 
 Event OnLocationChange(Location akOldLoc, Location akNewLoc)
-	(GetOwningQuest() as BaboDiaMonitorScript).PlayerChangeLocation(akOldLoc, akNewLoc)
+	BaboDiaMonitorScript monitor = (GetOwningQuest() as BaboDiaMonitorScript)
+	if monitor != None
+		monitor.PlayerChangeLocation(akOldLoc, akNewLoc)
+	endif
 EndEvent
 
 int Function CheckingVersion()
@@ -128,6 +131,9 @@ EndEvent
 
 Event OnMenuOpen(string sMenuName)
 	int iIndex = MenuEventStrings.Find(sMenuName)
+	if iIndex < 0 || iIndex >= StateStrings.Length
+		return
+	endif
 	GoToState(StateStrings[iIndex])
 EndEvent
 

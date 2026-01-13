@@ -18,7 +18,13 @@ Actor Property PlayerRef Auto
 
 Function StealingGold(ReferenceAlias StealerRef, int Number)
 
-Actor Pervert = StealerRef.GetActorReference()
+	if PlayerRef == None || Gold001 == None
+		return
+	endif
+	if StealerRef == None
+		return
+	endif
+	Actor Pervert = StealerRef.GetActorReference()
 
 	PlayerRef.RemoveItem(Gold001, Number, false, Pervert)
 
@@ -26,36 +32,68 @@ EndFunction
 
 Function ConfiscateMWeapon(ReferenceAlias StealerRef)
 
-Actor Pervert = PervertRef.GetActorReference()
+	if PlayerRef == None
+		return
+	endif
+	if StealerRef == None
+		return
+	endif
+	Actor Pervert = StealerRef.GetActorReference()
 
 	CurrentRWeapon = PlayerRef.GetEquippedObject(1) as Weapon
-	PlayerRef.RemoveItem(CurrentRWeapon, 1, false, Pervert)
+	if CurrentRWeapon != None
+		PlayerRef.RemoveItem(CurrentRWeapon, 1, false, Pervert)
+	endif
 
 EndFunction
 
 Function ConfiscateShield(ReferenceAlias StealerRef)
 
-Actor Pervert = StealerRef.GetActorReference()
+	if PlayerRef == None
+		return
+	endif
+	if StealerRef == None
+		return
+	endif
+	Actor Pervert = StealerRef.GetActorReference()
 
 	CurrentShield = PlayerRef.GetWornForm(0x00000200) as Armor
-	PlayerRef.RemoveItem(CurrentShield, 1, false, Pervert)
+	if CurrentShield != None
+		PlayerRef.RemoveItem(CurrentShield, 1, false, Pervert)
+	endif
 
 EndFunction
 
 Function ConfiscateArmorBra(ReferenceAlias StealerRef)
 
-Actor Pervert = StealerRef.GetActorReference()
+	if PlayerRef == None
+		return
+	endif
+	if StealerRef == None
+		return
+	endif
+	Actor Pervert = StealerRef.GetActorReference()
 
 	CurrentBody = PlayerRef.GetWornForm(0x00000004) as Armor
-	PlayerRef.RemoveItem(CurrentBody, 1, false, Pervert)
+	if CurrentBody != None
+		PlayerRef.RemoveItem(CurrentBody, 1, false, Pervert)
+	endif
 
 EndFunction
 
 Function ConfiscateArmorPanty(ReferenceAlias StealerRef)
 
-Actor Pervert = StealerRef.GetActorReference()
+	if PlayerRef == None
+		return
+	endif
+	if StealerRef == None
+		return
+	endif
+	Actor Pervert = StealerRef.GetActorReference()
 
 	CurrentPanty = PlayerRef.GetWornForm(0x00400000) as Armor
-	PlayerRef.RemoveItem(CurrentPanty, 1, false, Pervert)
+	if CurrentPanty != None
+		PlayerRef.RemoveItem(CurrentPanty, 1, false, Pervert)
+	endif
 
 EndFunction

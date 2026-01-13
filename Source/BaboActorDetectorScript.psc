@@ -15,17 +15,21 @@ Actor Property PlayerRef Auto
 
 
 Bool Function CountActors()
-Int iIndex = ReferenceArray.Length
-	If iIndex != 0
-	While iIndex
+	Int iIndex = ReferenceArray.Length
+	if iIndex == 0
+		return false
+	endif
+
+	while iIndex
 		iIndex -= 1
 		Referencealias kalias = ReferenceArray[iIndex]
 		Actor kActor = (kalias.getref() as actor)
-	EndWhile
-	Else
-		Return false
-	EndIf
-	Return True
+		if kActor != None
+			return true
+		endif
+	endwhile
+
+	return false
 EndFunction
 
 Function ReArmTrigger()

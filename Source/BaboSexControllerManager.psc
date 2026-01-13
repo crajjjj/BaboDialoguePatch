@@ -391,7 +391,7 @@ i -= 1
 EndWhile
 EndFunction
 
-Event Onint()
+Event OnInit()
 	RegisterSexlabHooks()
 	SOSSize()
 EndEvent
@@ -485,7 +485,7 @@ Function SexCustomActor(Actor Actor01, Actor Actor02, Actor Actor03, Actor Actor
 	endif
 	Int ActorCount = sexActors.Length
 	sslBaseAnimation[] anims
-	anims = SexLab.GetAnimationsByTag(ActorCount, "Tag01", "Tag02", "Tag03",  TagSuppress = "Femdom")
+	anims = SexLab.GetAnimationsByTag(ActorCount, Tag01, Tag02, Tag03,  TagSuppress = "Femdom")
 
 	If NextScene
 		RegisterForModEvent("AnimationEnd_" + EventRegisterDummy, EventName)
@@ -4109,6 +4109,9 @@ EndFunction
 
 Function QTETextStart()
 	bQTETextAbort = false
+	if BaboWidgetTextController == None
+		return
+	endif
 	Bool IsSuccess = StartQTEText(BDMCM.BaboQTELimitTime, BDMCM.BaboQTEDifficulty)
 	if bQTETextAbort
 		return
@@ -4123,6 +4126,9 @@ Function QTETextStart()
 EndFunction
 
 bool Function StartQTEText(float limitTime, float fdifficulty)
+	if BaboWidgetTextController == None
+		return false
+	endif
 	string msg = JsonUtil.getstringvalue(file, "baboqtetextfire")
 	(BaboWidgetTextController as BaboQTETextWidgetEx).start()
 	Utility.Wait(0.5)

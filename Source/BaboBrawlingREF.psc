@@ -1,13 +1,19 @@
 Scriptname BaboBrawlingREF extends ReferenceAlias  
 
-Event Onint()
+Event OnInit()
 if SetEssentialNPC
-	GetActorReference().GetActorBase().SetEssential(true)
+	Actor selfActorRef = GetActorReference()
+	if selfActorRef != None
+		selfActorRef.GetActorBase().SetEssential(true)
+	endif
 endif
 
 	;###############SE#################
 	If OnHitSwitch
-		PO3_Events_Alias.RegisterForHitEventEx(self, Game.getplayer(), None, None, -1, -1, -1, -1, true)
+		Actor playerRef = Game.GetPlayer()
+		if playerRef != None
+			PO3_Events_Alias.RegisterForHitEventEx(self, playerRef, None, None, -1, -1, -1, -1, true)
+		endif
 	endif
 	;###############SE#################
 EndEvent
@@ -23,31 +29,45 @@ Event OnHitEx(ObjectReference akAggressor, Form akSource, Projectile akProjectil
 EndEvent
 
 Event OnEnterBleedout()
-Deathcount = BaboQuest.DeathCountNum
-DeathcountGoal = BaboQuest.DeathCountGoalNum
-Faintcount = BaboQuest.FaintCountNum 
-FaintcountGoal = BaboQuest.FaintCountGoalNum
+	if BaboQuest == None
+		return
+	endif
+	Deathcount = BaboQuest.DeathCountNum
+	DeathcountGoal = BaboQuest.DeathCountGoalNum
+	Faintcount = BaboQuest.FaintCountNum 
+	FaintcountGoal = BaboQuest.FaintCountGoalNum
 
 	If BleedOutSwitch
 		If GetOwningQuest().GetStage() == FirstStage
 			; this actor just lost
 			;GetActorReference().GetActorBase().SetEssential(true)
 			Utility.wait(0.5)
-			GetActorReference().SetUnconscious(true)
-			GetActorReference().PushActorAway(GetActorReference(), 1)
+			Actor selfActorRef = GetActorReference()
+			if selfActorRef == None
+				return
+			endif
+			selfActorRef.SetUnconscious(true)
+			selfActorRef.PushActorAway(selfActorRef, 1)
 			If FaintSwitch
 				BaboQuest.FaintCount()
 				;Debug.notification(BaboQuest.FaintCount() + "added")
 			EndIF
 		ElseIf GetOwningQuest().GetStage() != FirstStage || Deathcount == DeathCountGoal
 			; this actor not just lost but die
-			GetActorReference().SetUnconscious(false)
-			GetActorReference().GetActorBase().SetEssential(false)
+			Actor selfActorRef = GetActorReference()
+			if selfActorRef == None
+				return
+			endif
+			selfActorRef.SetUnconscious(false)
+			selfActorRef.GetActorBase().SetEssential(false)
 		EndIf
 	EndIf
 EndEvent
 
 Event OnDeath(Actor akKiller)
+	if BaboQuest == None
+		return
+	endif
 	If DeathSwitch
 		BaboQuest.DeathCount()
 		BaboQuest.CorruptionExp(-0.8)
