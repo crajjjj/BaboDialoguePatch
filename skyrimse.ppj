@@ -10,7 +10,7 @@
     Final="false">
     <Variables>
         <!-- Set the name of your mod: -->
-        <Variable Name="ModName" Value="BaboDialogue611patch" />
+        <Variable Name="ModName" Value="BaboDialogue 6.1.1 stability patch" />
         <Variable Name="SkyrimScripts" Value="C:\SteamLibrary\steamapps\common\Skyrim Special Edition\Data\Source\Scripts" />
         <!-- The folder where you store all of your mods -->
         <Variable Name="ModsFolder" Value="..\" />
