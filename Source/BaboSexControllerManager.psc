@@ -798,6 +798,7 @@ Function LosingControl()
   Game.SetPlayerAIDriven(True) ; #DEBUG_LINE_NO:840
   Game.ForceThirdPerson() ; #DEBUG_LINE_NO:844
   ControlBool = False ; #DEBUG_LINE_NO:845
+  BaboSuspendAcheron() ; Babo seized control -> suspend Acheron defeat processing
 EndFunction
 
 Function StuckControl()
@@ -806,6 +807,7 @@ Function StuckControl()
   Game.ForceThirdPerson() ; #DEBUG_LINE_NO:851
   actorutil.AddPackageOverride(PlayerRef, BaboDoNothing, 100, 1) ; #DEBUG_LINE_NO:853
   ControlBool = False ; #DEBUG_LINE_NO:855
+  BaboSuspendAcheron() ; Babo seized control -> suspend Acheron defeat processing
 EndFunction
 
 Bool Function RecoverControl(Bool ResetIdle = true)
@@ -821,9 +823,40 @@ Bool Function RecoverControl(Bool ResetIdle = true)
       Debug.SendAnimationEvent(PlayerRef as ObjectReference, "IdleForceDefaultState") ; #DEBUG_LINE_NO:868
     EndIf
     ControlBool = True ; #DEBUG_LINE_NO:870
+    BaboResumeAcheron() ; Babo released control -> resume Acheron defeat processing
     Return True ; #DEBUG_LINE_NO:871
   Else
     Return False ; #DEBUG_LINE_NO:873
+  EndIf
+EndFunction
+
+; ===================== Acheron (Death Alternative) coexistence =====================
+; Babo has its own built-in defeat/surrender/capture scenes. When an external defeat
+; framework (Acheron) is installed, its lethal-damage interception can hijack those
+; scenes. LosingControl/StuckControl (Babo seizes the player) and RecoverControl
+; (Babo releases the player) are the common chokepoint for every scripted-defeat
+; pathway, so we suspend Acheron's hit processing for exactly that window.
+; Soft dependency: no-ops when Acheron is absent, and only ever re-enables what THIS
+; script disabled (never stomps another mod's DisableProcessing state).
+Bool AcheronSuspendedByUs = False
+
+Bool Function AcheronReady()
+  ; 0x801 = AcheronDefeated keyword; GetFormFromFile resolves for ESL/ESM/ESP alike
+  ; and returns None when Acheron.esm is not in the load order.
+  Return Game.GetFormFromFile(2049, "Acheron.esm") != None
+EndFunction
+
+Function BaboSuspendAcheron()
+  If !AcheronSuspendedByUs && AcheronReady()
+    Acheron.DisableProcessing(True)
+    AcheronSuspendedByUs = True
+  EndIf
+EndFunction
+
+Function BaboResumeAcheron()
+  If AcheronSuspendedByUs
+    Acheron.DisableProcessing(False)
+    AcheronSuspendedByUs = False
   EndIf
 EndFunction
 

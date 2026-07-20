@@ -549,6 +549,8 @@ dist/Core/Interface/translations/SexLabAroused_rename.bat
 /scripts
 /Seq
 /Interface
-/SKSE
+/SKSE/*
+# but DO track the Acheron coexistence validation file (authored patch content)
+!/SKSE/Acheron
 /Textures
 /sound

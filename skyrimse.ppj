@@ -10,7 +10,7 @@
     Final="false">
     <Variables>
         <!-- Set the name of your mod: -->
-        <Variable Name="ModName" Value="BaboDialogue 6.1.1 stability patch" />
+        <Variable Name="ModName" Value="BaboDialogue 6.1.1.1 stability patch" />
         <Variable Name="SkyrimScripts" Value="C:\SteamLibrary\steamapps\common\Skyrim Special Edition\Data\Source\Scripts" />
         <!-- The folder where you store all of your mods -->
         <Variable Name="ModsFolder" Value="..\" />
@@ -23,6 +23,9 @@
              import-only for type resolution. @ImportsFolder (Source) is listed first so the
              35 patched scripts shadow their 6.11 counterparts during name resolution. -->
         <Import>.\dependencies\babo611\source</Import>
+        <!-- Acheron (Death Alternative) global API — import-only, for the Tier-2
+             defeat-framework coexistence hooks in BaboSexControllerManager. -->
+        <Import>.\dependencies\Acheron\Source\Scripts</Import>
         <!-- <Import>.\dependencies\overwrite</Import> -->
         <Import>.\dependencies\FNIS Behavior SE 7.6\Data\source\scripts</Import>
         <Import>.\dependencies\FNIS Sexy Move SE 7.2\Data\Source\Scripts</Import>
@@ -109,6 +112,8 @@
             <!-- <Include NoRecurse="true">*.bsa</Include> -->
             <Match In="source">*.psc</Match>
             <Match In="scripts">*.pex</Match>
+            <!-- Acheron (Death Alternative) coexistence validation backstop -->
+            <Match In="SKSE\Acheron\Validation">*.yml</Match>
             <!-- <Include>meta.ini</Include> -->
             <!-- <Include>*.esp</Include> -->
         </ZipFile>

@@ -1,0 +1,34 @@
+# Babo Dialogue <-> Acheron (Death Alternative) coexistence — Tier 1 validation backstop.
+#
+# Companion to the Tier-2 script hook in BaboSexControllerManager (which actively
+# suspends Acheron's hit processing while Babo has seized player control). This file
+# is the DATA-ONLY safety net: it tells Acheron to SKIP its own defeat / game-over
+# whenever a Babo hostile is involved, or the player is flagged into a Babo combat /
+# surrender faction — so Babo's built-in defeat / surrender / capture scenes run
+# instead of being hijacked. It catches the pathways that do NOT route through Babo's
+# control chokepoints (e.g. the brawl/duel knockdowns and the loan-shark beatdown).
+#
+# How it works: a top-level `Faction:` entry matches EITHER side of the encounter
+# (assailant OR victim) — any actor in one of these factions is ignored by Acheron,
+# exactly like Acheron's own "# Ignored Faction" example. FormIDs are
+# BaboInteractiveDia.esp 24-bit local IDs, made load-order independent by the
+# |plugin suffix. Requires Babo Dialogue; if Acheron is not installed this file is
+# simply never read (harmless).
+#
+# If you ever find Acheron is being suppressed when it shouldn't be, delete this
+# file — the Tier-2 script hook still handles the main scripted-defeat scenes.
+
+Faction:
+  # --- Babo HOSTILE factions (matched as the assailant attacking the player) ---
+  - 0x233CEF|BaboInteractiveDia.esp   # BaboHateFaction (generic Babo combat enemy)
+  - 0x6BD3AE|BaboInteractiveDia.esp   # BaboKidnapperEnemyFaction
+  - 0x194718|BaboInteractiveDia.esp   # BaboLoanSharkFaction
+  - 0x1B7E98|BaboInteractiveDia.esp   # BaboLoanSharkBossFaction
+  - 0x230C2E|BaboInteractiveDia.esp   # BaboEnemyRieklingFaction
+  - 0x37E607|BaboInteractiveDia.esp   # BaboThirskRieklingInvaderFaction
+  - 0x442C28|BaboInteractiveDia.esp   # BaboThirskRieklingInvaderChiefFaction
+  - 0xB71E3E|BaboInteractiveDia.esp   # BaboViceGuardCaptainFaction
+  - 0xFBD150|BaboInteractiveDia.esp   # BaboBadEndFaction
+  # --- Babo PLAYER-side factions (player is mid-encounter / has surrendered) ---
+  - 0x5F17CF|BaboInteractiveDia.esp   # BaboPlayerFaction (active Babo combat)
+  - 0x530DF7|BaboInteractiveDia.esp   # BaboPlayerSurrenderFaction (post-surrender)

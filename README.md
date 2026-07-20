@@ -37,6 +37,34 @@ If `dependencies/babo611/source/` is missing (fresh clone), regenerate it:
    `Function MinusRescueCount(Int num)` / `EndFunction` (6.11's SexController calls it but the
    base script never defines it — a latent stock bug, harmless at runtime).
 
+## Defeat-framework coexistence (Acheron)
+`BaboSexControllerManager` carries a Tier-2 hook so Babo's own built-in defeat /
+surrender / capture scenes don't get hijacked by [Acheron (Death Alternative)](https://www.nexusmods.com/skyrimspecialedition/mods/108159).
+Babo's control chokepoints — `LosingControl` / `StuckControl` (player seized) and
+`RecoverControl` (player released, also reached via `AwayFromtheScene`) — now call
+`Acheron.DisableProcessing(true/false)` so Acheron's lethal-damage interception is
+suspended for exactly the window Babo is driving the player.
+- **Soft dependency:** guarded by `Game.GetFormFromFile(0x801,"Acheron.esm")` (the
+  `AcheronDefeated` keyword; resolves for ESL/ESM/ESP), so it no-ops cleanly when
+  Acheron isn't installed. Only ever re-enables what this script disabled.
+- **Coverage:** every scripted-defeat pathway that routes through the control
+  chokepoints (surrender, kidnap, Riekling capture, Windhelm/Newgnisis, Bad End,
+  change-location ambushes, Encounter 13). **Not** covered: the brawl/duel-ref
+  knockdowns (`BaboBrawlingPlayerREF.Defeated()` & siblings) which seize control
+  directly — those toggle the player Essential, so Acheron can't fire during them
+  anyway. Some duel-ref scripts were rewritten in 6.11 and are intentionally not
+  overridden (see below).
+- `Acheron.psc` is import-only (`dependencies/Acheron/Source/Scripts/`); nothing
+  from Acheron is shipped.
+
+**Tier 1 backstop — `SKSE/Acheron/Validation/BaboDialogue.yml`.** A data-only
+companion (no script risk) that tells Acheron to skip its own defeat whenever a Babo
+hostile faction is involved, or the player is flagged into a Babo combat/surrender
+faction. It uses Acheron's top-level `Faction:` list (matches either side), so it
+also catches the pathways Tier 2 misses (brawl/duel knockdowns, loan-shark). FormIDs
+are `BaboInteractiveDia.esp` locals, load-order independent. Packaged into the
+release zip; delete the file if Acheron ever gets over-suppressed.
+
 ## Not shipped (base 6.11 provides these)
 `BaboKidnapEvenScript`, `BaboReputationMasterScript`, `BaboRieklingThirskDuelRefScript`
 (heavily rewritten in 6.11 — the 6.00 guards no longer map), and
