@@ -5,7 +5,7 @@
 **No ESP, no BSA of its own** — it ships *loose* `.pex` that override only the
 scripts it actually fixes, load-ordered after the base mod.
 
-Current release: **6.1.1** (git tag + GitHub release). Version lives in the ppj
+Current release: **6.1.1.2** (git tag + GitHub release). Version lives in the ppj
 `@ModName` and the release-zip name — there is no `meta.ini`/`fomod` here.
 
 ## The one rule that matters most: only override scripts you genuinely fix

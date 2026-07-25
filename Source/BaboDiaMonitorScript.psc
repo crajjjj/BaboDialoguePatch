@@ -833,6 +833,9 @@ Function BeginUpdates()
 EndFunction
 
 Event OnUpdateGameTime()
+  ; Fail-safe: never leave Acheron suspended once Babo has handed control back
+  ; (self-heals a missed resume, including on save reload).
+  (BaboSexController as babosexcontrollermanager).ReconcileAcheron() ; #DEBUG_LINE_NO:995
   Self.DoUpdate() ; #DEBUG_LINE_NO:996
   Self.DoStatus() ; #DEBUG_LINE_NO:997
 EndEvent

@@ -785,6 +785,7 @@ Function Restrained(Actor akactor, Bool abRestrain)
     Game.SetPlayerAIDriven(False) ; #DEBUG_LINE_NO:824
     akactor.SetHeadTracking(True) ; #DEBUG_LINE_NO:825
     akactor.SetVehicle(None) ; #DEBUG_LINE_NO:826
+    BaboResumeAcheron() ; player un-restrained without RecoverControl -> resume Acheron
   Else
     akactor.SetRestrained(False) ; #DEBUG_LINE_NO:829
     akactor.SetDontMove(False) ; #DEBUG_LINE_NO:830
@@ -811,6 +812,7 @@ Function StuckControl()
 EndFunction
 
 Bool Function RecoverControl(Bool ResetIdle = true)
+  BaboResumeAcheron() ; resume on ANY control-restore, even when the ControlBool guard below is skipped
   If ControlBool == False ; #DEBUG_LINE_NO:859
     Self.PrecisionCheck(PlayerRef, False) ; #DEBUG_LINE_NO:860
     Game.EnablePlayerControls(True, True, True, True, True, True, True, True, 0) ; #DEBUG_LINE_NO:861
@@ -823,7 +825,6 @@ Bool Function RecoverControl(Bool ResetIdle = true)
       Debug.SendAnimationEvent(PlayerRef as ObjectReference, "IdleForceDefaultState") ; #DEBUG_LINE_NO:868
     EndIf
     ControlBool = True ; #DEBUG_LINE_NO:870
-    BaboResumeAcheron() ; Babo released control -> resume Acheron defeat processing
     Return True ; #DEBUG_LINE_NO:871
   Else
     Return False ; #DEBUG_LINE_NO:873
@@ -838,6 +839,16 @@ EndFunction
 ; pathway, so we suspend Acheron's hit processing for exactly that window.
 ; Soft dependency: no-ops when Acheron is absent, and only ever re-enables what THIS
 ; script disabled (never stomps another mod's DisableProcessing state).
+;
+; SELF-HEALING: DisableProcessing is a sticky global toggle, so a missed resume would
+; leave Acheron disabled for the whole save. Guard against that three ways:
+;   1) RecoverControl resumes UNCONDITIONALLY (not gated by ControlBool).
+;   2) Restrained(player, False) - a control-restore that bypasses RecoverControl -
+;      also resumes.
+;   3) ReconcileAcheron(), called every tick from BaboDiaMonitorScript's game-time
+;      update loop, resumes whenever Babo is no longer driving the player
+;      (ControlBool == True). This also runs after load, so any legacy stuck state
+;      clears on its own.
 Bool AcheronSuspendedByUs = False
 
 Bool Function AcheronReady()
@@ -857,6 +868,15 @@ Function BaboResumeAcheron()
   If AcheronSuspendedByUs
     Acheron.DisableProcessing(False)
     AcheronSuspendedByUs = False
+  EndIf
+EndFunction
+
+; Fail-safe reconcile, driven by the monitor's update loop. If Babo is not currently
+; driving the player (control restored) but we still hold Acheron suspended, release
+; it. Cheap: one bool test, and BaboResumeAcheron is a no-op unless we suspended.
+Function ReconcileAcheron()
+  If AcheronSuspendedByUs && ControlBool
+    BaboResumeAcheron()
   EndIf
 EndFunction
 
