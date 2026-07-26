@@ -10,7 +10,9 @@
 #
 # How it works: a top-level `Faction:` entry matches EITHER side of the encounter
 # (assailant OR victim) — any actor in one of these factions is ignored by Acheron,
-# exactly like Acheron's own "# Ignored Faction" example. FormIDs are
+# exactly like Acheron's own "# Ignored Faction" example. Because it matches either
+# side, ONLY list factions that exist strictly during a Babo scene (hostile NPC
+# factions) — never long-lived or leak-prone ones. FormIDs are
 # BaboInteractiveDia.esp 24-bit local IDs, made load-order independent by the
 # |plugin suffix. Requires Babo Dialogue; if Acheron is not installed this file is
 # simply never read (harmless).
@@ -29,6 +31,9 @@ Faction:
   - 0x442C28|BaboInteractiveDia.esp   # BaboThirskRieklingInvaderChiefFaction
   - 0xB71E3E|BaboInteractiveDia.esp   # BaboViceGuardCaptainFaction
   - 0xFBD150|BaboInteractiveDia.esp   # BaboBadEndFaction
-  # --- Babo PLAYER-side factions (player is mid-encounter / has surrendered) ---
-  - 0x5F17CF|BaboInteractiveDia.esp   # BaboPlayerFaction (active Babo combat)
-  - 0x530DF7|BaboInteractiveDia.esp   # BaboPlayerSurrenderFaction (post-surrender)
+  # NOTE: deliberately NO player-side factions here (BaboPlayerFaction /
+  # BaboPlayerSurrenderFaction). This list matches EITHER side of an encounter, and
+  # Babo leaks BaboPlayerFaction (added on every challenge start, removed only via
+  # the pacify path) - listing it disabled Acheron permanently for the whole save
+  # once the player was stuck in it. The player-side suspend window is handled by
+  # the Tier-2 script hook in BaboSexControllerManager instead.
